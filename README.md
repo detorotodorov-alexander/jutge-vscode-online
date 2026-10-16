@@ -7,10 +7,10 @@ Fork of [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) that
 **Install in vscode.dev:** press `F1` → **Developer: Install Extension from Location...** and paste
 
 ```
-https://detorotodorov-alexander.github.io/jutge-vscode-online/
+https://cdn.jsdelivr.net/gh/detorotodorov-alexander/jutge-vscode-online/extension/
 ```
 
-The built extension is published from the `gh-pages` branch.
+The built extension lives in the [`extension/`](extension/) folder (served with CORS by jsDelivr).
 
 ---
 

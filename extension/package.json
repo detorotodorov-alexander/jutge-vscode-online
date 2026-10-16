@@ -1,0 +1,443 @@
+{
+    "name": "jutge-vscode-web",
+    "displayName": "Jutge.org (Web)",
+    "publisher": "jutge-org",
+    "description": "Jutge.org for Visual Studio Code — also works in VS Code for the Web (vscode.dev, github.dev)",
+    "version": "0.1.10",
+    "repository": "https://github.com/jutge-org/jutge-vscode",
+    "license": "See license in LICENSE",
+    "icon": "resources/jutge.png",
+    "preview": true,
+    "engines": {
+        "vscode": "^1.90.0"
+    },
+    "categories": [
+        "Education",
+        "Other"
+    ],
+    "activationEvents": [
+        "onStartupFinished",
+        "onWebviewPanel:problemView"
+    ],
+    "capabilities": {
+        "virtualWorkspaces": true,
+        "untrustedWorkspaces": {
+            "supported": true
+        }
+    },
+    "main": "./dist/extension.js",
+    "browser": "./dist/web/extension.js",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "jutge",
+                    "title": "Jutge.org",
+                    "icon": "resources/jutge-icon.svg"
+                }
+            ]
+        },
+        "views": {
+            "jutge": [
+                {
+                    "id": "jutge-sign-in",
+                    "name": "Sign in",
+                    "type": "webview",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-home",
+                    "name": "Jutge Stats",
+                    "visibility": "collapsed",
+                    "contextualTitle": "Jutge.org",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-api",
+                    "name": "Jutge API",
+                    "visibility": "collapsed",
+                    "contextualTitle": "Jutge.org",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-courses",
+                    "name": "Courses",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isSignedIn.Courses"
+                },
+                {
+                    "id": "jutge-profile",
+                    "name": "Profile",
+                    "type": "webview",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isSignedIn.Courses"
+                },
+                {
+                    "id": "jutge-exams",
+                    "name": "Exams",
+                    "type": "webview",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-exam-properties",
+                    "name": "Exam properties",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-exam-documents",
+                    "name": "Documents",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isSignedIn.Exam"
+                },
+                {
+                    "id": "jutge-ranking",
+                    "name": "Ranking",
+                    "visibility": "visible",
+                    "contextualTitle": "Jutge.org",
+                    "when": "jutge-vscode.isContestMode"
+                },
+                {
+                    "id": "jutge-about",
+                    "name": "About",
+                    "visibility": "collapsed",
+                    "contextualTitle": "Jutge.org",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam"
+                }
+            ]
+        },
+        "viewsWelcome": [
+            {
+                "visibility": "collapsed",
+                "view": "jutge-about",
+                "contents": "This is the Jutge.org VSCode extension.\n\n [Jutge.org](https://jutge.org)\n\n© Universitat Politècnica de Catalunya - BarcelonaTech (UPC), 2026."
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "jutge-vscode.invalidateToken",
+                    "when": "(jutge-vscode.isSignedIn.Courses || jutge-vscode.isSignedIn.Exam) && (view == jutge-courses || view == jutge-exams) && jutge-vscode.isDevMode",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshCoursesTree",
+                    "when": "jutge-vscode.isSignedIn.Courses && view == jutge-courses",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshProfileTree",
+                    "when": "jutge-vscode.isSignedIn.Courses && view == jutge-profile",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.signOut",
+                    "when": "jutge-vscode.isSignedIn.Courses && view == jutge-courses",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshExamsTree",
+                    "when": "jutge-vscode.isSignedIn.Exam && view == jutge-exams",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshExamPropertiesTree",
+                    "when": "jutge-vscode.isSignedIn.Exam && view == jutge-exam-properties",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.openDashboardPanel",
+                    "when": "jutge-vscode.isSignedIn.Exam && view == jutge-exam-properties",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshExamDocumentsTree",
+                    "when": "jutge-vscode.isSignedIn.Exam && view == jutge-exam-documents",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshRankingTree",
+                    "when": "jutge-vscode.isContestMode && view == jutge-ranking",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.openRankingPanel",
+                    "when": "jutge-vscode.isContestMode && view == jutge-ranking",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshHomeTree",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam && view == jutge-home",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.refreshApiTree",
+                    "when": "!jutge-vscode.isSignedIn.Courses && !jutge-vscode.isSignedIn.Exam && view == jutge-api",
+                    "group": "navigation"
+                },
+                {
+                    "command": "jutge-vscode.signOutExam",
+                    "when": "jutge-vscode.isSignedIn.Exam && view == jutge-exams",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "jutge-vscode.signOut",
+                "title": "Jutge.org: Sign Out",
+                "icon": {
+                    "light": "resources/light/signout.svg",
+                    "dark": "resources/dark/signout.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.signOutExam",
+                "title": "Jutge.org: Sign Out from Exam",
+                "icon": {
+                    "light": "resources/light/signout.svg",
+                    "dark": "resources/dark/signout.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.showProblem",
+                "title": "Jutge.org: Show Problem"
+            },
+            {
+                "command": "jutge-vscode.invalidateToken",
+                "title": "Jutge.org: Invalidate Token",
+                "enablement": "jutge-vscode.isDevMode",
+                "icon": {
+                    "light": "resources/light/cookie.svg",
+                    "dark": "resources/dark/cookie.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshCoursesTree",
+                "title": "Jutge.org: Refresh Courses Tree",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshProfileTree",
+                "title": "Jutge.org: Refresh Profile View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshExamsTree",
+                "title": "Jutge.org: Refresh Exams Tree",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshHomeTree",
+                "title": "Jutge.org: Refresh Jutge Stats View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshApiTree",
+                "title": "Jutge.org: Refresh Jutge API View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshExamPropertiesTree",
+                "title": "Jutge.org: Refresh Exam Properties View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.openDashboardPanel",
+                "title": "Jutge.org: Open Dashboard Window",
+                "icon": {
+                    "light": "resources/light/dashboard.svg",
+                    "dark": "resources/dark/dashboard.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshExamDocumentsTree",
+                "title": "Jutge.org: Refresh Exam Documents View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.refreshRankingTree",
+                "title": "Jutge.org: Refresh Ranking View",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+                "command": "jutge-vscode.openRankingPanel",
+                "title": "Jutge.org: Open Ranking Window",
+                "icon": {
+                    "light": "resources/light/list-unordered.svg",
+                    "dark": "resources/dark/list-unordered.svg"
+                }
+            }
+        ],
+        "configuration": {
+            "title": "Jutge.org",
+            "properties": {
+                "jutge-vscode.runner.python.flags": {
+                    "type": "array",
+                    "default": [
+                        "-u"
+                    ],
+                    "description": "The flags to run Python scripts (by default, the flags Jutge.org uses)",
+                    "TODO": "These should be obtained from the Jutge.org API, not hardcoded."
+                },
+                "jutge-vscode.runner.cpp.command": {
+                    "type": "string",
+                    "default": "g++",
+                    "description": "The command to compile C++ programs"
+                },
+                "jutge-vscode.runner.cpp.flags": {
+                    "type": "array",
+                    "default": [
+                        "-std=c++17",
+                        "-O2",
+                        "-Wall",
+                        "-Wextra",
+                        "-Wshadow",
+                        "-pedantic"
+                    ],
+                    "description": "The flags to compile C++ programs (by default, the flags Jutge.org uses)"
+                },
+                "jutge-vscode.runner.ghc.command": {
+                    "type": "string",
+                    "default": "ghc",
+                    "description": "The command to compile Haskell programs"
+                },
+                "jutge-vscode.runner.ghc.flags": {
+                    "type": "array",
+                    "default": [
+                        "-O2"
+                    ],
+                    "description": "The flags to compile Haskell programs (by default, the flags Jutge.org uses)"
+                },
+                "jutge-vscode.problem.preferredLang": {
+                    "type": "string",
+                    "default": "Català",
+                    "enum": [
+                        "Català",
+                        "Castellano",
+                        "English",
+                        "Français",
+                        "Deutsch"
+                    ],
+                    "description": "The preferred language for problem descriptions.",
+                    "TODO": "These should be obtained from the Jutge.org API, not hardcoded."
+                },
+                "jutge-vscode.web.timeoutSeconds": {
+                    "type": "number",
+                    "default": 10,
+                    "minimum": 1,
+                    "description": "(VS Code for the Web) Maximum time, in seconds, a Python program may run in the browser before it is stopped."
+                },
+                "jutge-vscode.web.pyodideUrl": {
+                    "type": "string",
+                    "default": "https://cdn.jsdelivr.net/pyodide/v0.29.3/full/",
+                    "description": "(VS Code for the Web) Base URL from which Pyodide (Python for the browser) is loaded to run Python testcases locally."
+                },
+                "jutge-vscode.web.compilerExplorerUrl": {
+                    "type": "string",
+                    "default": "https://godbolt.org",
+                    "description": "(VS Code for the Web) Compiler Explorer instance used to compile and run C++ and Haskell testcases. Your code and the testcase input are sent to this service."
+                },
+                "jutge-vscode.web.cppCompilerId": {
+                    "type": "string",
+                    "default": "",
+                    "description": "(VS Code for the Web) Compiler Explorer compiler id for C++ (e.g. 'g142'). Empty = newest x86-64 GCC."
+                },
+                "jutge-vscode.web.haskellCompilerId": {
+                    "type": "string",
+                    "default": "",
+                    "description": "(VS Code for the Web) Compiler Explorer compiler id for Haskell (e.g. 'ghc984'). Empty = newest GHC."
+                }
+            }
+        }
+    },
+    "scripts": {
+        "compile": "node ./esbuild.js",
+        "watch": "node ./esbuild.js --watch",
+        "lint": "eslint src --ext ts",
+        "clean": "rm -rf out dist",
+        "prepare": "husky",
+        "format": "prettier --ignore-unknown --list-different --write *",
+        "package": "NODE_ENV=production node ./esbuild.js",
+        "vsce:prepublish": "bun package",
+        "vsce:package": "vsce package",
+        "vsce:publish": "vsce publish",
+        "precommit": "lint-staged"
+    },
+    "devDependencies": {
+        "@types/decompress": "^4.2.7",
+        "@types/deep-equal": "^1.0.4",
+        "@types/node": "^22.20.3",
+        "@types/vscode": "^1.90.0",
+        "@types/vscode-webview": "^1.57.5",
+        "@typescript-eslint/eslint-plugin": "^8.69.0",
+        "@typescript-eslint/parser": "^8.69.0",
+        "@vscode/vsce": "^4.0.0",
+        "esbuild": "^0.28.2",
+        "eslint": "^10.10.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.5.0",
+        "prettier": "^3.9.6",
+        "typescript": "^6.0.3"
+    },
+    "dependencies": {
+        "@vscode-elements/elements": "^2.5.1",
+        "@vscode/python-extension": "^1.0.6",
+        "@vscode/webview-ui-toolkit": "^1.4.0",
+        "dayjs": "^1.11.23",
+        "decompress": "^4.2.1",
+        "deep-equal": "^2.2.3",
+        "glob": "^13.0.6",
+        "rimraf": "^6.1.3",
+        "yaml": "^2.9.0"
+    },
+    "lint-staged": {
+        "*.ts": "eslint --cache --fix",
+        "*": "prettier --write --ignore-unknown"
+    },
+    "homepage": "https://marketplace.visualstudio.com/manage/publishers/jutge-org",
+    "prettier": {
+        "printWidth": 96,
+        "tabWidth": 4,
+        "useTabs": false,
+        "semi": false,
+        "singleQuote": false,
+        "quoteProps": "consistent",
+        "jsxSingleQuote": false,
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "arrowParens": "always"
+    }
+}
