@@ -2,6 +2,10 @@
 
 All notable changes to the "jutge-vscode" extension will be documented in this file.
 
+## 0.1.12 (web fork)
+
+- New name ("Jutge Web"), new typographic icon and a rewritten Marketplace page explaining why this fork exists.
+
 ## 0.1.11 (web fork)
 
 - Renamed to "Jutge (Unofficial) for VS Code Web", with its own icons, and a clear statement that it is not affiliated with Jutge.org or UPC.

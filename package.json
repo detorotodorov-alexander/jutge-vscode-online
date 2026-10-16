@@ -1,9 +1,9 @@
 {
     "name": "jutge-vscode-web",
-    "displayName": "Jutge (Unofficial) for VS Code Web",
+    "displayName": "Jutge Web — unofficial plugin for Jutge.org",
     "publisher": "detorotodorov-alexander",
-    "description": "Unofficial fork of the Jutge.org VS Code extension that also works in vscode.dev and github.dev. Not affiliated with or endorsed by Jutge.org or UPC.",
-    "version": "0.1.11",
+    "description": "Solve Jutge.org problems in vscode.dev and github.dev. The official extension only runs on desktop VS Code; this unofficial fork works in the browser. Not affiliated with Jutge.org or UPC.",
+    "version": "0.1.12",
     "repository": {
         "type": "git",
         "url": "https://github.com/detorotodorov-alexander/jutge-vscode-online"
@@ -35,7 +35,7 @@
             "activitybar": [
                 {
                     "id": "jutge",
-                    "title": "Jutge (Unofficial)",
+                    "title": "Jutge Web",
                     "icon": "resources/activity-icon.svg"
                 }
             ]
@@ -121,7 +121,7 @@
             {
                 "visibility": "collapsed",
                 "view": "jutge-about",
-                "contents": "Unofficial fork of the Jutge.org VS Code extension, adapted to work in VS Code for the Web.\n\nNot affiliated with or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC).\n\nBased on [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) (Apache-2.0) · [Source code](https://github.com/detorotodorov-alexander/jutge-vscode-online)"
+                "contents": "**Jutge Web** — an unofficial plugin for Jutge.org that also works in VS Code for the Web.\n\nThe official extension only runs on desktop VS Code; this fork makes it work in vscode.dev and github.dev.\n\nNot affiliated with or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC).\n\nBased on [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) (Apache-2.0) · [Source code](https://github.com/detorotodorov-alexander/jutge-vscode-online)"
             }
         ],
         "menus": {
@@ -452,5 +452,9 @@
         "education",
         "competitive programming",
         "vscode.dev"
-    ]
+    ],
+    "galleryBanner": {
+        "color": "#0E1117",
+        "theme": "dark"
+    }
 }

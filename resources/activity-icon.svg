@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-  <rect x="2.5" y="3.5" width="19" height="17" rx="2.5"/>
-  <line x1="2.5" y1="7.5" x2="21.5" y2="7.5"/>
-  <polyline points="9,11 6.5,14 9,17"/>
-  <polyline points="15,11 17.5,14 15,17"/>
-  <line x1="13" y1="10.5" x2="11" y2="17.5"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="currentColor" transform="translate(12 12) scale(0.009114 -0.009114) translate(-1137.0 -591.0)"><path transform="translate(0 0)" d="M102 1118H504V-38Q504 -185 442.5 -267.5Q381 -350 270.0 -384.0Q159 -418 12 -418H-70V-122H-24Q49 -122 75.5 -100.0Q102 -78 102 -30ZM303 1232Q221 1232 163.0 1286.0Q105 1340 105 1416Q105 1493 163.0 1546.5Q221 1600 303 1600Q385 1600 443.0 1546.5Q501 1493 501 1416Q501 1340 443.0 1286.0Q385 1232 303 1232Z"/><path transform="translate(546 0)" d="M320 0 -2 1118H418L482 768Q504 648 531 514Q546 435 559 348Q575 435 593 515Q624 649 649 768L724 1118H1072L1143 768Q1167 648 1199 514Q1217 433 1233 345Q1246 433 1260 514Q1284 648 1306 768L1370 1118H1798L1472 0H1060L954 368Q939 421 924 499Q909 569 896 641Q883 569 869 499Q854 421 838 368L732 0Z"/></g></svg>

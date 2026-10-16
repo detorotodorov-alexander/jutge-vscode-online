@@ -1,151 +1,115 @@
-# Jutge (Unofficial) for VS Code Web
+<p align="center">
+  <img src="resources/icon-web.png" width="112" alt="jutge web">
+</p>
 
-> **Unofficial project.** This is a fork of the official
-> [Jutge.org VS Code extension](https://github.com/jutge-org/jutge-vscode) adapted to work in
-> **VS Code for the Web** ([vscode.dev](https://vscode.dev), github.dev). It is **not affiliated
-> with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC)**.
-> "Jutge.org" is only used to describe compatibility with that service. If you use desktop
-> VS Code, prefer the [official extension](https://marketplace.visualstudio.com/items?itemName=jutge-org.jutge-vscode).
+<h1 align="center">Jutge Web</h1>
 
-Licensed under the Apache License 2.0, like the original. See [NOTICE](NOTICE) for the list of
-changes. Built by Alexander de Toro Todorov with the help of Claude Code.
+<p align="center">
+  <b>Solve <a href="https://jutge.org">Jutge.org</a> problems from any browser.</b><br>
+  A web-compatible plugin for <a href="https://vscode.dev">vscode.dev</a> and <a href="https://github.dev">github.dev</a>.
+</p>
 
-**Install in vscode.dev:** open the Extensions view and search for **"Jutge (Unofficial)"**.
-See [VS Code for the Web](#vs-code-for-the-web-vscodedev-githubdev) below for what changes in the browser.
-
-The text below is the original extension's README.
+<p align="center">
+  <sub>Unofficial project — not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC).</sub>
+</p>
 
 ---
 
-# Jutge VSCode Extension
+## Why this exists
 
-The Jutge VSCode Extension provides a seamless integration between [Visual Studio Code](https://code.visualstudio.com/) and [Jutge.org](https://jutge.org/). It empowers novice and experienced programmers to improve their coding skills by solving programming problems from Jutge.org directly within the IDE, making it easy to focus on coding without switching contexts.
+Jutge.org has an excellent [official VS Code extension](https://marketplace.visualstudio.com/items?itemName=jutge-org.jutge-vscode),
+but it only runs on **desktop** VS Code. It depends on Node.js, the local file system and
+locally installed compilers, none of which exist in the browser, so in vscode.dev it simply
+isn't available.
 
-_Ready to level up your programming practice? [Install the Jutge VSCode Extension](vscode:extension/jutge-org.jutge-vscode) and start solving Jutge.org's problems without leaving your favorite editor._
+That leaves out exactly the situations where a browser editor is most useful: a **tablet**, a
+**Chromebook**, a **lab or library computer** where you can't install anything, or just a
+quick exercise away from your own machine.
 
-The main features of the extension include:
+**Jutge Web** is a fork of the official extension, rebuilt so that the whole workflow runs in
+the browser. If you use desktop VS Code, the official extension is the better choice.
 
-- Log in to Jutge.org.
-- View lists of problems from Jutge.org organized by courses.
-- View problem statements and test cases.
-- Check solutions against public test cases in the local environment.
-- Submit solutions to the Jutge.org server.
-- View submission results and feedback.
-- Support for the C++, Python, and Haskell programming languages.
+## What you can do
 
-The extension is still in its early stages, and we are actively working on improving its functionality and user experience. In the near future, we plan to add more features such as:
+- **Sign in** with your Jutge.org account and browse your **courses and lists**
+- Read **problem statements** next to your code
+- **Create solution files** with the right header and template
+- **Run the public testcases** and your own custom ones, and compare outputs side by side
+- **Submit** to Jutge.org and get the **verdict** without leaving the editor
+- **Exam and contest mode** is included too, though less tested in the browser
 
-- Support for more programming languages.
-- Automatic installation of compilers and interpreters to ease new users' setup.
-- Enhanced problem browsing and filtering.
-- Copying with more types of problems in Jutge.org (problems with functions, quiz problems, graphical problems, ...).
-- Support for exams and contests.
+## How code runs in the browser
 
-The extension is built using TypeScript and leverages the VSCode API to provide a rich user experience. It uses webviews to display problem statements and test cases, and it integrates with [Jutge.org's API](https://api.jutge.org/) to manage authentication, problem retrieval, and submission handling.
+There is no compiler on a tablet, so each language takes a different route:
 
-This is an open-source project that thrives on community involvement. We welcome your contributions and feedback:
+| Language    | Where it runs                                                                                                                                                                                                                          |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Python**  | **On your device.** CPython compiled to WebAssembly ([Pyodide](https://pyodide.org)), inside a Web Worker. `input()`, `sys.stdin` and [`yogi`](https://pypi.org/project/yogi/) work. The first run downloads ~10 MB, then it's cached. |
+| **C++**     | **Remotely**, through the public [Compiler Explorer](https://godbolt.org) API (latest x86-64 GCC, with your `runner.cpp.flags`).                                                                                                       |
+| **Haskell** | **Remotely**, through Compiler Explorer (latest GHC).                                                                                                                                                                                  |
 
-- **Source Code**: Visit our [GitHub repository](https://github.com/jutge-org/jutge-vscode)
-- **Issue Tracking**: Check the [issues page](https://github.com/jutge-org/jutge-vscode/issues) for known issues and feature requests
-- **Get Involved**: Submit bug reports, feature requests, or contribute code to help improve the extension
+Programs that loop forever are stopped after a timeout, and VS Code stays responsive.
+Compiler errors show up as squiggles on the right line, with details in the **Jutge.org** output panel.
 
-See the [Contributing](#contributing) section for more details on how to get involved.
+## Install
 
-## VS Code for the Web (vscode.dev, github.dev)
+1. Open [vscode.dev](https://vscode.dev) (or any repository on github.dev).
+2. Open the **Extensions** view and search for **Jutge Web**.
+3. Click **Install**, then open the Jutge icon in the activity bar and sign in.
 
-This version of the extension also runs in [VS Code for the Web](https://vscode.dev), where there is no
-Node.js and no local compilers. Everything works as on the desktop (sign in, courses, statements,
-testcases, submissions, exams), with these differences when **running testcases locally**:
+## Privacy
 
-| Language | How testcases run in the browser                                                                                                                                                                                                                                                                                                               |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Python   | Locally in your browser with [Pyodide](https://pyodide.org) (CPython compiled to WebAssembly), inside a Web Worker. `input()`, `sys.stdin` and [`yogi`](https://pypi.org/project/yogi/) work. The first run downloads Pyodide (~10 MB, cached afterwards). Programs that run longer than `jutge-vscode.web.timeoutSeconds` (10 s) are stopped. |
-| C++      | Compiled and executed remotely with the public [Compiler Explorer](https://godbolt.org) API (newest x86-64 GCC, with your `jutge-vscode.runner.cpp.flags`). Only the source code and the testcase input are sent.                                                                                                                              |
-| Haskell  | Same as C++, with the newest GHC on Compiler Explorer.                                                                                                                                                                                                                                                                                         |
+- Your Jutge.org credentials and submissions go **only to Jutge.org**, exactly as with the official extension.
+- Python runs entirely **in your browser**.
+- For C++ and Haskell testcases, the **source code and the testcase input** are sent to Compiler Explorer.
+  You can point `jutge-vscode.web.compilerExplorerUrl` to your own instance.
 
-Limitations in the browser:
+## Limitations
 
-- Graphic problems (turtle / images) cannot be tested locally; submit them to Jutge.org.
-- Exam PDF documents are saved into your workspace (download them from the Explorer to read them).
-- Compiler Explorer reports program output line by line, so a missing final newline cannot be detected locally.
+- **Graphic problems** (turtle, images) can't be tested locally in the browser. Submit them to Jutge.org.
+- **Exam PDFs** are saved into your workspace. Download them from the Explorer to read them.
+- Compiler Explorer returns output line by line, so a **missing final newline** can't be detected locally.
 
-Web-only settings: `jutge-vscode.web.timeoutSeconds`, `jutge-vscode.web.pyodideUrl`,
-`jutge-vscode.web.compilerExplorerUrl` (use your own instance if you prefer),
-`jutge-vscode.web.cppCompilerId` and `jutge-vscode.web.haskellCompilerId`.
+## Settings
 
-To install a `.vsix` in vscode.dev: open the Extensions view, click `···` → **Install from VSIX...**
-and pick the file.
+| Setting                                | Default               | Description                                    |
+| -------------------------------------- | --------------------- | ---------------------------------------------- |
+| `jutge-vscode.web.timeoutSeconds`      | `10`                  | Maximum run time for Python in the browser     |
+| `jutge-vscode.web.compilerExplorerUrl` | `https://godbolt.org` | Compiler Explorer instance for C++ and Haskell |
+| `jutge-vscode.web.cppCompilerId`       | latest GCC            | Compiler Explorer id, e.g. `g142`              |
+| `jutge-vscode.web.haskellCompilerId`   | latest GHC            | Compiler Explorer id, e.g. `ghc984`            |
+| `jutge-vscode.web.pyodideUrl`          | jsDelivr CDN          | Where Pyodide is loaded from                   |
+| `jutge-vscode.problem.preferredLang`   | `Català`              | Language of the problem statements             |
 
-## Installation
+The extension also works on desktop VS Code, where it behaves like the official one and uses
+your local compilers.
 
-### VSCode link
+## Credits and license
 
-You can install the extension directly in Visual Studio Code by clicking [this link](vscode:extension/jutge-org.jutge-vscode).
+Built by **Alexander de Toro Todorov** ([inverso.bio](https://inverso.bio/about)) with the help of Claude Code.
 
-### From VSCode Marketplace
+Based on the official [Jutge.org VS Code extension](https://github.com/jutge-org/jutge-vscode) by
+[Alex Serrano](https://github.com/serteal), [Pau Fernández](https://github.com/pauek),
+[Joaquín Millán Aldaz](https://github.com/jma25l) and [Jordi Petit](https://github.com/jordi-petit),
+© Universitat Politècnica de Catalunya – BarcelonaTech (UPC).
 
-Install the extension from the [VSCode Marketplace](https://marketplace.visualstudio.com/items?itemName=jutge-org.jutge-vscode).
+Licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for the list of changes.
+"Jutge.org" is used only to describe compatibility with that service.
 
-### Building and packaging the extension
+Found a bug? [Open an issue](https://github.com/detorotodorov-alexander/jutge-vscode-online/issues).
 
-1. Clone the repository:
+<details>
+<summary><b>For developers</b></summary>
 
 ```bash
-git clone https://github.com/jutge-org/jutge-vscode.git
-cd jutge-vscode
-```
-
-2. Install dependencies:
-
-```bash
+git clone https://github.com/detorotodorov-alexander/jutge-vscode-online.git
+cd jutge-vscode-online
 npm install
+npm run compile                                            # builds desktop + web bundles into dist/
+npx @vscode/test-web --extensionDevelopmentPath=. .        # try the web build locally
+npx @vscode/vsce package                                   # create a .vsix
 ```
 
-3. Build and package the extension:
+Architecture notes for the web port are in [`docs/Architecture.md`](docs/Architecture.md).
 
-```bash
-make vsix
-```
-
-4. Install the extension from the `.vsix` file by following the docs in [VSCode Marketplace](https://code.visualstudio.com/docs/editor/extension-marketplace#_install-from-a-vsix)
-
-### Note for Windows environments and Visual Studio Build Tools:
-
-Those using Windows, and more specifically Visual Studio Build Tools in order to compile c++ programs (AKA. using the 'cl' command), must ensure that Visual Studio Code is loaded from a developer command prompt, that includes the required environment variables (the easiest way of checking it is by executing cl in a terminal and seeing if the command is recognized). If not, my recommendation is to write a .bat file with these contents (minor changes may exist on the second line), that will load the required tools and then open VSCode in the directory in which the file is located. This file can be executed normally and will open a command window, which can be closed once VSCode is ready.
-
-```
-@echo off
-call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvarsall.bat" x64
-code .
-```
-
-Additionally, the following must be changed on the extension's settings:
-
-- **Cpp: Command**: `cl`
-- **Cpp: Flags**:
-
-```json
-"jutge-vscode.runner.cpp.flags": [
-    "/EHsc",
-    "/std:c++20",
-    "/W4",
-    "/O2"
-],
-```
-
-## Development
-
-Checkout the [`DEVELOPERS.md`](https://github.com/jutge-vscode/tree/main/DEVELOPERS.md) file on GitHub for instructions on how to build the extensions and how to contribute to it.
-
-## License
-
-Apache License 2.0
-
-## Credits
-
-- [Alex Serrano](https://github.com/serteal)
-- [Pau Fernández](https://github.com/pauek)
-- [Joaquín Millán Aldaz](https://github.com/jma25l)
-- [Jordi Petit](https://github.com/jordi-petit)
-
-© Universitat Politècnica de Catalunya - BarcelonaTech (UPC), 2026.
+</details>
