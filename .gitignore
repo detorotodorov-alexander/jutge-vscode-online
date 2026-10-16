@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+.eslintcache
+.vscode-test
+.links
+*.vsix
+
+out/
+dist/
+jutge-vscode*/
+

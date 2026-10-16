@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "Node16",
+        "target": "esnext",
+        "lib": ["esnext", "DOM", "DOM.Iterable"],
+        "sourceMap": true,
+        "rootDir": "src",
+        "strict": true,
+        "paths": {
+            "@/*": ["./src/*"]
+        },
+        "types": ["node"]
+    },
+    "exclude": ["node_modules", ".vscode-test", "src/webview/", "openapi-ts.config.ts"]
+}

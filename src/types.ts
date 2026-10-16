@@ -1,0 +1,119 @@
+import { Testcase } from "@/jutge_api_client"
+
+export enum LanguageCode {
+    ca = "ca",
+    es = "es",
+    en = "en",
+    fr = "fr",
+    de = "de",
+}
+
+export enum TestcaseStatus {
+    RUNNING = "running",
+    PASSED = "passed",
+    FAILED = "failed",
+}
+
+export enum IconStatus {
+    ACCEPTED = "accepted",
+    PRESENTATION_ERROR = "presentation_error",
+    REJECTED = "rejected",
+    NONE = "none",
+    FAILED = "failed",
+    SCORED = "scored",
+}
+
+export const status2IconStatus: Record<SubmissionStatus, IconStatus> = {
+    AC: IconStatus.ACCEPTED,
+    PE: IconStatus.PRESENTATION_ERROR,
+    WA: IconStatus.REJECTED,
+    IC: IconStatus.REJECTED,
+    CE: IconStatus.REJECTED,
+    EE: IconStatus.REJECTED,
+    TLE: IconStatus.REJECTED,
+    SC: IconStatus.SCORED,
+    Pending: IconStatus.NONE,
+    Failed: IconStatus.FAILED,
+}
+
+export enum SubmissionStatus {
+    AC = "AC",
+    WA = "WA",
+    IC = "IC",
+    PE = "PE",
+    CE = "CE",
+    EE = "EE",
+    TLE = "TLE",
+    SC = "SC",
+    PENDING = "Pending",
+    FAILED = "Failed",
+}
+
+export type ProblemHandler = {
+    handler: string
+    source_modifier: string
+    compilers: string
+    checker?: string
+    func_name?: string
+    separator?: string //for elastic checker
+    separator1?: string //for elastic2 checker
+    separator2?: string //for elastic2 checker
+    starting?: string //for elastic2 checker
+    ending?: string //for elastic2 checker
+}
+
+export type CustomTestcase = {
+    index: number
+    input: string
+    solution: string | undefined
+}
+
+export type Problem = {
+    problem_id: string
+    problem_nm: string
+    title: string
+    language_id: null | string
+    statementHtml: string | null
+    testcases: Testcase[] | null
+    handler: ProblemHandler | null
+}
+
+export type InputExpected = {
+    input: string
+    expected: Uint8Array
+}
+
+export type TestcaseRun = {
+    status: TestcaseStatus
+    output: string
+}
+
+export type VSCodeToWebviewMessage = {
+    command: VSCodeToWebviewCommand
+    data: any
+}
+
+export enum VSCodeToWebviewCommand {
+    UPDATE_PROBLEM_FILES = "update-custom-testcases",
+    UPDATE_TESTCASE_STATUS = "update-testcase-status",
+    UPDATE_CUSTOM_TESTCASE_STATUS = "update-custom-testcase-status",
+    UPDATE_SUBMISSION_STATUS = "update-submission-status",
+}
+
+export type WebviewToVSCodeMessage = {
+    command: WebviewToVSCodeCommand
+    data: any
+}
+
+export enum WebviewToVSCodeCommand {
+    NEW_FILE = "new-file",
+    OPEN_EXISTING_FILE = "open-existing-file",
+    SUBMIT_TO_JUTGE = "submit-to-jutge",
+    RUN_ALL_TESTCASES = "run-all-testcases",
+    RUN_TESTCASE = "run-testcase",
+    EDIT_TESTCASE = "edit-testcase",
+    EDIT_TESTCASE_SOLUTION = "edit-testcase-solution",
+    RUN_CUSTOM_TESTCASE = "run-custom-testcase",
+    ADD_NEW_TESTCASE = "add-new-testcase",
+    SHOW_DIFF = "show-diff",
+}
