@@ -3,7 +3,7 @@
     "displayName": "Jutge Web — unofficial plugin for Jutge.org",
     "publisher": "detorotodorov-alexander",
     "description": "Solve Jutge.org problems in vscode.dev and github.dev. The official extension only runs on desktop VS Code; this unofficial fork works in the browser. Not affiliated with Jutge.org or UPC.",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "repository": {
         "type": "git",
         "url": "https://github.com/detorotodorov-alexander/jutge-vscode-online"

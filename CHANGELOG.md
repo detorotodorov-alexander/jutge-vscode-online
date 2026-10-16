@@ -2,6 +2,10 @@
 
 All notable changes to the "jutge-vscode" extension will be documented in this file.
 
+## 0.1.13 (web fork)
+
+- New icon: angular wordmark with an abstract nod to the judge's wig of the original logo.
+
 ## 0.1.12 (web fork)
 
 - New name ("Jutge Web"), new typographic icon and a rewritten Marketplace page explaining why this fork exists.
