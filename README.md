@@ -4,13 +4,10 @@ Fork of [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) that
 **VS Code for the Web** ([vscode.dev](https://vscode.dev), github.dev). See
 [VS Code for the Web](#vs-code-for-the-web-vscodedev-githubdev) below for what changes in the browser.
 
-**Install in vscode.dev:** press `F1` → **Developer: Install Extension from Location...** and paste
-
-```
-https://cdn.jsdelivr.net/gh/detorotodorov-alexander/jutge-vscode-online/extension/
-```
-
-The built extension lives in the [`extension/`](extension/) folder (served with CORS by jsDelivr).
+**Install in vscode.dev:** search for it in the Extensions view once it is published on the
+VS Code Marketplace (vscode.dev only installs extensions from the Marketplace; `.vsix` files and
+"Install Extension from Location" with external hosts are blocked by vscode.dev's security policy).
+On desktop VS Code you can also install the `.vsix` from the releases.
 
 ---
 
