@@ -2,7 +2,12 @@
 
 All notable changes to the "jutge-vscode" extension will be documented in this file.
 
-## Unreleased
+## 0.1.11 (web fork)
+
+- Renamed to "Jutge (Unofficial) for VS Code Web", with its own icons, and a clear statement that it is not affiliated with Jutge.org or UPC.
+- Added NOTICE file and modification notices (Apache-2.0).
+
+## 0.1.10 (web fork)
 
 - Works in VS Code for the Web (vscode.dev, github.dev): new `browser` entry point.
     - Python testcases run in the browser with Pyodide (with `yogi` support and a timeout).

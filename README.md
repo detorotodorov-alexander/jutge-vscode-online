@@ -1,13 +1,19 @@
-# Jutge.org for VS Code — Web edition
+# Jutge (Unofficial) for VS Code Web
 
-Fork of [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) that also works in
-**VS Code for the Web** ([vscode.dev](https://vscode.dev), github.dev). See
-[VS Code for the Web](#vs-code-for-the-web-vscodedev-githubdev) below for what changes in the browser.
+> **Unofficial project.** This is a fork of the official
+> [Jutge.org VS Code extension](https://github.com/jutge-org/jutge-vscode) adapted to work in
+> **VS Code for the Web** ([vscode.dev](https://vscode.dev), github.dev). It is **not affiliated
+> with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC)**.
+> "Jutge.org" is only used to describe compatibility with that service. If you use desktop
+> VS Code, prefer the [official extension](https://marketplace.visualstudio.com/items?itemName=jutge-org.jutge-vscode).
 
-**Install in vscode.dev:** search for it in the Extensions view once it is published on the
-VS Code Marketplace (vscode.dev only installs extensions from the Marketplace; `.vsix` files and
-"Install Extension from Location" with external hosts are blocked by vscode.dev's security policy).
-On desktop VS Code you can also install the `.vsix` from the releases.
+Licensed under the Apache License 2.0, like the original. See [NOTICE](NOTICE) for the list of
+changes. Built by Alexander de Toro Todorov with the help of Claude Code.
+
+**Install in vscode.dev:** open the Extensions view and search for **"Jutge (Unofficial)"**.
+See [VS Code for the Web](#vs-code-for-the-web-vscodedev-githubdev) below for what changes in the browser.
+
+The text below is the original extension's README.
 
 ---
 

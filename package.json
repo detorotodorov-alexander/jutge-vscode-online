@@ -1,15 +1,15 @@
 {
     "name": "jutge-vscode-web",
-    "displayName": "Jutge.org (Web)",
+    "displayName": "Jutge (Unofficial) for VS Code Web",
     "publisher": "detorotodorov-alexander",
-    "description": "Jutge.org for Visual Studio Code — also works in VS Code for the Web (vscode.dev, github.dev)",
-    "version": "0.1.10",
+    "description": "Unofficial fork of the Jutge.org VS Code extension that also works in vscode.dev and github.dev. Not affiliated with or endorsed by Jutge.org or UPC.",
+    "version": "0.1.11",
     "repository": {
         "type": "git",
         "url": "https://github.com/detorotodorov-alexander/jutge-vscode-online"
     },
-    "license": "See license in LICENSE",
-    "icon": "resources/jutge.png",
+    "license": "Apache-2.0",
+    "icon": "resources/icon-web.png",
     "preview": true,
     "engines": {
         "vscode": "^1.90.0"
@@ -35,8 +35,8 @@
             "activitybar": [
                 {
                     "id": "jutge",
-                    "title": "Jutge.org",
-                    "icon": "resources/jutge-icon.svg"
+                    "title": "Jutge (Unofficial)",
+                    "icon": "resources/activity-icon.svg"
                 }
             ]
         },
@@ -121,7 +121,7 @@
             {
                 "visibility": "collapsed",
                 "view": "jutge-about",
-                "contents": "This is the Jutge.org VSCode extension.\n\n [Jutge.org](https://jutge.org)\n\n© Universitat Politècnica de Catalunya - BarcelonaTech (UPC), 2026."
+                "contents": "Unofficial fork of the Jutge.org VS Code extension, adapted to work in VS Code for the Web.\n\nNot affiliated with or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC).\n\nBased on [jutge-org/jutge-vscode](https://github.com/jutge-org/jutge-vscode) (Apache-2.0) · [Source code](https://github.com/detorotodorov-alexander/jutge-vscode-online)"
             }
         ],
         "menus": {

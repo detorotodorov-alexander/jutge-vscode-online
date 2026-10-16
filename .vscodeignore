@@ -34,3 +34,6 @@ mise.toml
 eslint.config.js
 bun.lock
 package-lock.json
+resources/jutge.png
+resources/jutge-icon.svg
+resources/jutge-original.svg

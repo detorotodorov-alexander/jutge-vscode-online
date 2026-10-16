@@ -1,3 +1,5 @@
+// Modified by Alexander de Toro Todorov, 2026: VS Code for the Web support.
+// Original: https://github.com/jutge-org/jutge-vscode (Apache-2.0). See NOTICE.
 import * as vscode from "vscode"
 import { bytesToBase64 } from "@/lib/portable"
 
