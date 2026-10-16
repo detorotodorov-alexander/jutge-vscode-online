@@ -1,10 +1,13 @@
 {
     "name": "jutge-vscode-web",
     "displayName": "Jutge.org (Web)",
-    "publisher": "jutge-org",
+    "publisher": "detorotodorov-alexander",
     "description": "Jutge.org for Visual Studio Code — also works in VS Code for the Web (vscode.dev, github.dev)",
     "version": "0.1.10",
-    "repository": "https://github.com/jutge-org/jutge-vscode",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/detorotodorov-alexander/jutge-vscode-online"
+    },
     "license": "See license in LICENSE",
     "icon": "resources/jutge.png",
     "preview": true,
@@ -427,7 +430,7 @@
         "*.ts": "eslint --cache --fix",
         "*": "prettier --write --ignore-unknown"
     },
-    "homepage": "https://marketplace.visualstudio.com/manage/publishers/jutge-org",
+    "homepage": "https://github.com/detorotodorov-alexander/jutge-vscode-online#readme",
     "prettier": {
         "printWidth": 96,
         "tabWidth": 4,
@@ -439,5 +442,15 @@
         "trailingComma": "es5",
         "bracketSpacing": true,
         "arrowParens": "always"
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/detorotodorov-alexander/jutge-vscode-online/issues"
+    },
+    "keywords": [
+        "jutge",
+        "upc",
+        "education",
+        "competitive programming",
+        "vscode.dev"
+    ]
 }

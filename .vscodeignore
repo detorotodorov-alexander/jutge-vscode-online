@@ -26,3 +26,11 @@ docs/**
 TODO.md
 IDEAS.md
 ERRORS.md
+
+# Not needed in the packaged extension
+CLAUDE.md
+DEVELOPERS.md
+mise.toml
+eslint.config.js
+bun.lock
+package-lock.json
