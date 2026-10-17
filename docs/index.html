@@ -183,7 +183,10 @@ section { padding-block: clamp(3.5rem, 9vw, 7rem); }
 
 /* ---------- story ---------- */
 .story { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
-.story blockquote .upc { white-space: nowrap; }
+.upc { white-space: nowrap; }
+.dots { height: .75em; width: .75em; margin-right: .22em; vertical-align: -.025em; fill: currentColor; }
+.dots circle { r: 2.9px; }
+.story blockquote .dots circle { r: 3.7px; }
 .story blockquote .dots { height: .72em; width: .72em; margin-right: .2em; vertical-align: -.015em; fill: currentColor; }
 .story blockquote { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; }
 .story .body p { font-size: 1.1rem; }
@@ -280,7 +283,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
           <span data-i18n="cta.repo">Ver el código en GitHub</span>
         </a>
       </div>
-      <p class="small" data-i18n="hero.note">Proyecto no oficial: no está afiliado ni respaldado por Jutge.org ni por la UPC.</p>
+      <p class="small" data-i18n="hero.note">Proyecto no oficial: no está afiliado ni respaldado por Jutge.org ni por la <span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span>.</p>
     </div>
 
     <figure class="mock" aria-label="vscode.dev, vista de extensiones">
@@ -447,7 +450,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       </article>
       <article>
         <h3 data-i18n="lic.tm.t">Nombres y logotipos</h3>
-        <p data-i18n="lic.tm.p">La licencia del código no cubre las marcas. “Jutge.org” y “UPC” se mencionan solo para describir la compatibilidad. No se usa el logotipo de Jutge.org ni el de la UPC: el icono de la extensión y los nueve círculos de esta página son diseños propios.</p>
+        <p data-i18n="lic.tm.p">La licencia del código no cubre las marcas. “Jutge.org” y “<span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span>” se mencionan solo para describir la compatibilidad. No se usa el logotipo de Jutge.org ni el de la UPC: el icono de la extensión y los nueve círculos son diseños propios.</p>
       </article>
       <article>
         <h3 data-i18n="lic.3p.t">Componentes de terceros</h3>
@@ -463,7 +466,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     <div class="story">
       <blockquote id="story-title" data-i18n="story.q">El Jutge de la <span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span> estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
       <div class="body">
-        <p data-i18n="story.p1">Jutge.org es el juez en línea con el que se aprende a programar en la UPC, y su extensión oficial para VS Code es muy buena. Pero se queda en el escritorio, justo donde un editor en el navegador sería más útil: en tablets, en Chromebooks o en ordenadores donde no se puede instalar nada.</p>
+        <p data-i18n="story.p1">Jutge.org es el juez en línea con el que se aprende a programar en la <span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span>, y su extensión oficial para VS Code es muy buena. Pero se queda en el escritorio, justo donde un editor en el navegador sería más útil: en tablets, en Chromebooks o en ordenadores donde no se puede instalar nada.</p>
         <p data-i18n="story.p2">Para que cualquiera pueda usar Jutge desde un navegador, adapté la extensión a vscode.dev: separé lo que depende del sistema, llevé Python al navegador con WebAssembly y conecté C++ y Haskell con Compiler Explorer. La desarrollé con la ayuda de Claude Code y está publicada en el Marketplace.</p>
         <p data-i18n="story.p3">El código es abierto, con la misma licencia que el original (Apache 2.0). Si a los autores de Jutge les sirve, encantado de que lo integren en la extensión oficial.</p>
       </div>
@@ -501,7 +504,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "hero.lede": "L’extensió oficial de Jutge només funciona al VS Code d’escriptori. Aquesta versió no oficial fa que tot funcioni al VS Code per a la Web: iniciar sessió, llegir enunciats, provar jocs de proves i enviar solucions des de qualsevol navegador: tauletes, Chromebooks o ordinadors compartits.",
       "cta.install": "Instal·lar des del Marketplace",
       "cta.repo": "Veure el codi a GitHub",
-      "hero.note": "Projecte no oficial: no està afiliat ni avalat per Jutge.org ni per la UPC.",
+      "hero.note": "Projecte no oficial: no està afiliat ni avalat per Jutge.org ni per la <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>.",
       "mock.unavailable": "No disponible al VS Code per a la Web",
       "why.title": "Per què l’extensió oficial no funciona a la web",
       "why.lede": "A vscode.dev, les extensions no s’executen al teu ordinador: s’executen dins del navegador, en un entorn aïllat. L’extensió oficial necessita quatre coses que allà no existeixen. Canvia d’entorn per veure-ho.",
@@ -560,7 +563,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t5.a": "El teu codi C++ o Haskell en provar-lo",
       "t5.c": "S’envien el codi i l’entrada del joc de proves, demanant que no es desin. El servidor es pot canviar a la configuració.",
       "story.q": "El Jutge de la <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span> estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
-      "story.p1": "Jutge.org és el jutge en línia amb què s’aprèn a programar a la UPC, i la seva extensió oficial per a VS Code és molt bona. Però es queda a l’escriptori, just on un editor al navegador seria més útil: en tauletes, en Chromebooks o en ordinadors on no es pot instal·lar res.",
+      "story.p1": "Jutge.org és el jutge en línia amb què s’aprèn a programar a la <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>, i la seva extensió oficial per a VS Code és molt bona. Però es queda a l’escriptori, just on un editor al navegador seria més útil: en tauletes, en Chromebooks o en ordinadors on no es pot instal·lar res.",
       "story.p2": "Perquè tothom pugui fer servir Jutge des d’un navegador, vaig adaptar l’extensió a vscode.dev: vaig separar el que depèn del sistema, vaig portar Python al navegador amb WebAssembly i vaig connectar C++ i Haskell amb Compiler Explorer. La vaig desenvolupar amb l’ajuda de Claude Code i està publicada al Marketplace.",
       "story.p3": "El codi és obert, amb la mateixa llicència que l’original (Apache 2.0). Si als autors de Jutge els és útil, estaré encantat que l’integrin a l’extensió oficial.",
       "lic.title": "Llicències i propietat intel·lectual",
@@ -570,7 +573,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "lic.fork.t": "Aquesta versió",
       "lic.fork.p": "Es distribueix amb la mateixa llicència, Apache 2.0. El fitxer <a href=\"https://github.com/detorotodorov-alexander/jutge-vscode-online/blob/main/NOTICE\">NOTICE</a> resumeix els canvis, i cada fitxer modificat ho indica al principi. Els autors originals apareixen als crèdits.",
       "lic.tm.t": "Noms i logotips",
-      "lic.tm.p": "La llicència del codi no cobreix les marques. “Jutge.org” i “UPC” només es mencionen per descriure la compatibilitat. No s’utilitza el logotip de Jutge.org ni el de la UPC: la icona de l’extensió i els nou cercles d’aquesta pàgina són dissenys propis.",
+      "lic.tm.p": "La llicència del codi no cobreix les marques. “Jutge.org” i “<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>” només es mencionen per descriure la compatibilitat. No s’utilitza el logotip de Jutge.org ni el de la UPC: la icona de l’extensió i els nou cercles són dissenys propis.",
       "lic.3p.t": "Components de tercers",
       "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), inclòs per llegir l’entrada en Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), que es descarrega de jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, un servei extern amb les seves pròpies condicions. Les tipografies tenen llicència SIL Open Font License.",
       "cta.title": "Prova-la a vscode.dev",
@@ -588,7 +591,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "hero.lede": "The official Jutge extension only runs on desktop VS Code. This unofficial version makes everything work in VS Code for the Web: sign in, read statements, run testcases and submit solutions, from any browser: tablets, Chromebooks or shared computers.",
       "cta.install": "Install from the Marketplace",
       "cta.repo": "View the code on GitHub",
-      "hero.note": "Unofficial project: not affiliated with or endorsed by Jutge.org or UPC.",
+      "hero.note": "Unofficial project: not affiliated with or endorsed by Jutge.org or <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>.",
       "mock.unavailable": "Not available in VS Code for the Web",
       "why.title": "Why the official extension doesn’t work on the web",
       "why.lede": "In vscode.dev, extensions don’t run on your computer: they run inside the browser, in an isolated sandbox. The official extension needs four things that don’t exist there. Switch environments to see it.",
@@ -647,7 +650,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t5.a": "Your C++ or Haskell code when you test it",
       "t5.c": "The code and the testcase input are sent, asking for them not to be stored. The server can be changed in the settings.",
       "story.q": "<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
-      "story.p1": "Jutge.org is the online judge used to learn programming at UPC, and its official VS Code extension is very good. But it stops at the desktop, right where a browser editor would be most useful: on tablets, on Chromebooks, or on computers where nothing can be installed.",
+      "story.p1": "Jutge.org is the online judge used to learn programming at <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>, and its official VS Code extension is very good. But it stops at the desktop, right where a browser editor would be most useful: on tablets, on Chromebooks, or on computers where nothing can be installed.",
       "story.p2": "So that anyone can use Jutge from a browser, I adapted the extension to vscode.dev: I separated everything that depends on the system, brought Python to the browser with WebAssembly and connected C++ and Haskell through Compiler Explorer. I built it with the help of Claude Code, and it is published on the Marketplace.",
       "story.p3": "The code is open source, under the same license as the original (Apache 2.0). If it’s useful to Jutge’s authors, I’d be glad to see it merged into the official extension.",
       "lic.title": "Licenses and intellectual property",
@@ -657,7 +660,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "lic.fork.t": "This version",
       "lic.fork.p": "It is distributed under the same license, Apache 2.0. The <a href=\"https://github.com/detorotodorov-alexander/jutge-vscode-online/blob/main/NOTICE\">NOTICE</a> file summarizes the changes, and every modified file says so at the top. The original authors are listed in the credits.",
       "lic.tm.t": "Names and logos",
-      "lic.tm.p": "The code license doesn’t cover trademarks. “Jutge.org” and “UPC” are mentioned only to describe compatibility. Neither the Jutge.org logo nor the UPC logo is used: the extension icon and the nine circles on this page are original designs.",
+      "lic.tm.p": "The code license doesn’t cover trademarks. “Jutge.org” and “<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>” are mentioned only to describe compatibility. Neither the Jutge.org logo nor the UPC logo is used: the extension icon and the nine circles are original designs.",
       "lic.3p.t": "Third-party components",
       "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), bundled to read input in Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), downloaded from jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, an external service with its own terms. The typefaces are licensed under the SIL Open Font License.",
       "cta.title": "Try it in vscode.dev",
