@@ -71,7 +71,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--paper-2); p
 .small { font-size: .9rem; color: var(--muted); margin-top: 1rem; }
 
 /* mock of the vscode.dev extensions view */
-.mock { justify-self: end; width: min(100%, 640px); background: #1E1E1E; color: #CCCCCC; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px #0F121866, 0 0 0 1px #0F121822; font: 14.5px/1.45 var(--body); }
+.mock { margin: 0; justify-self: end; width: min(100%, 640px); background: #1E1E1E; color: #CCCCCC; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px #0F121866, 0 0 0 1px #0F121822; font: 14.5px/1.45 var(--body); }
 .mock-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: #2B2B2B; }
 .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: #555; display: block; }
 .mock-bar span { margin-left: 10px; font-size: 12px; color: #9D9D9D; }
@@ -238,6 +238,9 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 .mm.open .lbl { opacity: 1; transform: none; }
 .mm a:hover .lbl, .mm a:focus-visible .lbl { color: var(--ink); }
 .mm a:focus-visible { outline-offset: 0; }
+@media (max-width: 700px), (hover: none) {
+  .mm { display: none; }
+}
 @media (max-width: 700px) {
   .mm { left: 3px; }
   .mm-track { width: 11px; padding: 4px 3px; }
@@ -270,6 +273,9 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
   .hero, .story, .foot, .sim-grid { grid-template-columns: 1fr; }
+  .mock { justify-self: stretch; width: 100%; }
+  .ext { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; padding: 11px 12px; }
+  .ext .ico { width: 40px; height: 40px; }
   .needs { grid-template-columns: 1fr; }
   .needs li:nth-child(odd), .needs li:nth-child(even) { padding: 1.2rem 0; border-right: 0; }
   .split { grid-template-columns: 1fr; }
@@ -1048,7 +1054,6 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     const view = nav.querySelector(".mm-view");
     const items = [...nav.querySelectorAll("li")].map(li => ({ li, el: document.getElementById(li.dataset.target) }));
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
-    const touchLayout = () => !finePointer.matches || innerWidth <= 700;
     let segs = [], hideTimer = 0, hovering = false, nearEdge = false;
 
     // Layout: each section gets a block whose height is proportional to the section,
@@ -1111,9 +1116,6 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     let ticking = false;
     addEventListener("scroll", () => {
       if (!ticking) { ticking = true; requestAnimationFrame(() => { update(); ticking = false; }); }
-      open();
-      // Phones/touch: visible only WHILE scrolling (momentum included), then it gets out of the way
-      closeSoon(touchLayout() ? 180 : 1300);
     }, { passive: true });
 
     // Mouse: open when the cursor approaches the left edge, close when it leaves
