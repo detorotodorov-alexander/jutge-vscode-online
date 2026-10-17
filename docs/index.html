@@ -244,6 +244,8 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   .mm .bar { width: 5px; }
   .mm .lbl { font-size: .78rem; }
   .mm.open .mm-track { width: min(64vw, 236px); }
+  .mm-track { transition: width .16s ease-out, background .12s ease, box-shadow .12s ease; }
+  .mm .lbl { transition: opacity .1s ease, transform .1s ease; }
   .mm-view { left: 1px; right: 1px; }
 }
 @media (prefers-reduced-motion: reduce) { .mm-track, .mm .lbl { transition: none; } }
@@ -1046,6 +1048,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     const view = nav.querySelector(".mm-view");
     const items = [...nav.querySelectorAll("li")].map(li => ({ li, el: document.getElementById(li.dataset.target) }));
     const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+    const touchLayout = () => !finePointer.matches || innerWidth <= 700;
     let segs = [], hideTimer = 0, hovering = false, nearEdge = false;
 
     // Layout: each section gets a block whose height is proportional to the section,
@@ -1108,7 +1111,9 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     let ticking = false;
     addEventListener("scroll", () => {
       if (!ticking) { ticking = true; requestAnimationFrame(() => { update(); ticking = false; }); }
-      open(); closeSoon();
+      open();
+      // Phones/touch: visible only WHILE scrolling (momentum included), then it gets out of the way
+      closeSoon(touchLayout() ? 180 : 1300);
     }, { passive: true });
 
     // Mouse: open when the cursor approaches the left edge, close when it leaves
