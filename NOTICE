@@ -4,7 +4,7 @@ Copyright 2026 Alexander de Toro Todorov
 This product is a modified version of the Jutge.org VS Code extension
 (https://github.com/jutge-org/jutge-vscode), licensed under the Apache License,
 Version 2.0. The original work is by the Jutge.org team, Universitat Politècnica
-de Catalunya (UPC).
+de Catalunya-BarcelonaTech (UPC).
 
 Changes in this version (2026, Alexander de Toro Todorov, developed with the help
 of Claude Code): support for VS Code for the Web (vscode.dev, github.dev),
@@ -18,4 +18,4 @@ This project is not affiliated with, sponsored or endorsed by Jutge.org or UPC.
 
 The file src/platform/web/yogi.py is a copy of the "yogi" library
 (https://pypi.org/project/yogi/), Copyright 2022 Universitat Politècnica de
-Catalunya, licensed under the Apache License, Version 2.0.
+Catalunya-BarcelonaTech, licensed under the Apache License, Version 2.0.

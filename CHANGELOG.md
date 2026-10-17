@@ -2,6 +2,11 @@
 
 All notable changes to the "jutge-vscode" extension will be documented in this file.
 
+## 0.1.15 (web fork)
+
+- Full university name: Universitat Politècnica de Catalunya-BarcelonaTech (UPC).
+- Website: licenses and IP section, Catalan translation, ultrawide layout, animated 3D author mark.
+
 ## 0.1.14 (web fork)
 
 - Marketplace page wording made generic for any browser user.

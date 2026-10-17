@@ -29,6 +29,7 @@
   --body: "Instrument Sans", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --measure: 66ch;
+  --maxw: clamp(1120px, 80vw, 1760px);
   --gutter: clamp(1.1rem, 4vw, 3rem);
 }
 * { box-sizing: border-box; }
@@ -40,7 +41,7 @@ body {
 }
 a { color: inherit; }
 :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
-.wrap { max-width: 1120px; margin-inline: auto; padding-inline: var(--gutter); }
+.wrap { max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gutter); }
 h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; margin: 0; }
 h2 { font-size: clamp(2rem, 4.4vw, 3.1rem); }
 h3 { font-size: 1.45rem; font-weight: 600; }
@@ -57,9 +58,9 @@ code { font-family: var(--mono); font-size: .88em; background: var(--paper-2); p
 
 /* ---------- hero ---------- */
 .hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(2.5rem, 7vw, 6rem) clamp(3rem, 8vw, 6.5rem); }
-.hero h1 { font-size: clamp(3rem, 8vw, 5.6rem); }
+.hero h1 { font-size: clamp(3rem, 6.2vw, 7.4rem); }
 .hero h1 span { display: block; color: var(--ink-2); font-weight: 500; font-size: .52em; margin-top: .4em; letter-spacing: 0; }
-.lede { font-size: 1.2rem; color: var(--ink-2); margin-top: 1.4rem; max-width: 34em; }
+.lede { font-size: clamp(1.2rem, 1vw + .5rem, 1.45rem); color: var(--ink-2); margin-top: 1.4rem; max-width: 34em; }
 .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
 .btn { display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 1.25rem; border-radius: 10px; font: 600 1rem var(--body); text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s ease, background .15s ease; }
 .btn:hover { transform: translateY(-1px); }
@@ -70,7 +71,7 @@ code { font-family: var(--mono); font-size: .88em; background: var(--paper-2); p
 .small { font-size: .9rem; color: var(--muted); margin-top: 1rem; }
 
 /* mock of the vscode.dev extensions view */
-.mock { background: #1E1E1E; color: #CCCCCC; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px #0F121866, 0 0 0 1px #0F121822; font: 14.5px/1.45 var(--body); }
+.mock { justify-self: end; width: min(100%, 640px); background: #1E1E1E; color: #CCCCCC; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px #0F121866, 0 0 0 1px #0F121822; font: 14.5px/1.45 var(--body); }
 .mock-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: #2B2B2B; }
 .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: #555; display: block; }
 .mock-bar span { margin-left: 10px; font-size: 12px; color: #9D9D9D; }
@@ -171,8 +172,18 @@ section { padding-block: clamp(3.5rem, 9vw, 7rem); }
 .dest.jutge { --c: #3B6FD8; }
 .dest.ce { --c: #D98A1E; }
 
+
+/* ---------- licenses ---------- */
+.licenses { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.licenses article { padding: 1.5rem 2rem 1.6rem 0; border-bottom: 1px solid var(--line); }
+.licenses article:nth-child(even) { padding: 1.5rem 0 1.6rem 2rem; border-left: 1px solid var(--line); }
+.licenses h3 { font-size: 1.3rem; margin-bottom: .45rem; }
+.licenses p { margin: 0; color: var(--ink-2); font-size: .98rem; }
+.licenses a { color: var(--ink); text-underline-offset: 3px; }
+
 /* ---------- story ---------- */
 .story { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.story blockquote .dots { height: .78em; width: .78em; margin-right: .18em; vertical-align: -.02em; fill: #2367C9; }
 .story blockquote { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; }
 .story .body p { font-size: 1.1rem; }
 
@@ -181,14 +192,53 @@ section { padding-block: clamp(3.5rem, 9vw, 7rem); }
 .cta h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
 footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 .foot { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: end; }
-.inverso { font-family: "Unbounded", sans-serif; font-weight: 800; font-size: clamp(2.4rem, 7vw, 4.4rem); letter-spacing: -0.03em; text-decoration: none; color: #ECE7E4; line-height: 1; display: inline-block; }
+.inverso { font-family: "Unbounded", sans-serif; font-weight: 800; font-size: clamp(2.6rem, 7vw, 6rem); letter-spacing: -0.03em; text-decoration: none; color: #ECE7E4; line-height: 1; display: inline-flex; perspective: 900px; padding: .25em 0 .3em; }
 .inverso .g { color: #7D6B75; }
-.inverso:hover .g { color: #A08E98; }
+/* 3D letters (built by the script below; plain text without JS) */
+.inverso .slot { position: relative; display: inline-block; --face: #ECE7E4; --side: #6E6460; --side-dark: #2E2725; }
+.inverso .slot.g { --face: #8C7884; --side: #4E3E47; --side-dark: #251C21; }
+.inverso .lt { display: inline-block; transform-style: preserve-3d; animation: inv-float 5.2s ease-in-out infinite; animation-delay: calc(var(--i) * -.62s); }
+.inverso .spin { display: inline-block; position: relative; transform-style: preserve-3d; }
+.inverso .face { position: relative; display: block; color: var(--face); }
+.inverso .inv-l { position: absolute; inset: 0; color: color-mix(in srgb, var(--side) calc(100% - var(--d) * 6%), var(--side-dark)); transform: translateZ(calc(var(--d) * -.011em)); }
+.inverso .shadow { position: absolute; left: 8%; right: 8%; bottom: -.12em; height: .1em; border-radius: 50%; background: radial-gradient(closest-side, #000c, #0000); animation: inv-shadow 5.2s ease-in-out infinite; animation-delay: calc(var(--i) * -.62s); }
+.inverso:hover .slot { --face: #fff; }
+.inverso:hover .slot.g { --face: #A08E98; }
+@keyframes inv-float {
+  0%, 100% { transform: translateY(0) rotateX(14deg) rotateY(-16deg); }
+  50% { transform: translateY(-.1em) rotateX(8deg) rotateY(-8deg); }
+}
+@keyframes inv-shadow {
+  0%, 100% { transform: scaleX(1); opacity: .9; }
+  50% { transform: scaleX(.78); opacity: .5; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .inverso .lt { animation: none; transform: rotateX(12deg) rotateY(-14deg); }
+  .inverso .shadow { animation: none; }
+}
 .byline { margin-top: 1rem; color: #9C918C; font-size: 1rem; }
 .byline a { color: #ECE7E4; text-underline-offset: 3px; }
 .legal { font-size: .85rem; color: #9C918C; line-height: 1.55; }
 .legal p { margin: 0 0 .7em; }
 .legal a { color: #C9C1BC; }
+
+
+/* ---------- ultrawide (21:9) ---------- */
+@media (min-width: 1900px) {
+  body { font-size: 1.15rem; }
+  .needs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .needs li, .needs li:nth-child(odd), .needs li:nth-child(even) { padding: 1.4rem 1.6rem; border-right: 1px solid var(--line); }
+  .needs li:first-child { padding-left: 0; }
+  .needs li:last-child { border-right: 0; }
+  .arch { max-width: none; display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 1rem; align-items: stretch; }
+  .arch .joint { display: none; }
+  .sim-grid { grid-template-columns: 1.6fr 1fr; }
+  .stage, .log { min-height: 460px; }
+  .mock { width: min(100%, 780px); font-size: 16px; }
+  .licenses { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .licenses article, .licenses article:nth-child(even) { padding: 1.5rem 1.6rem; border-left: 1px solid var(--line); }
+  .licenses article:first-child { padding-left: 0; border-left: 0; }
+}
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
@@ -196,6 +246,8 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   .needs { grid-template-columns: 1fr; }
   .needs li:nth-child(odd), .needs li:nth-child(even) { padding: 1.2rem 0; border-right: 0; }
   .split { grid-template-columns: 1fr; }
+  .licenses { grid-template-columns: 1fr; }
+  .licenses article, .licenses article:nth-child(even) { padding: 1.3rem 0; border-left: 0; }
   .stage { min-height: 0; }
   .data thead { display: none; }
   .data tr { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
@@ -385,10 +437,39 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 
   <hr class="rule">
 
+
+  <!-- LICENSES & IP -->
+  <section class="wrap" id="licenses" aria-labelledby="lic-title">
+    <div class="section-head">
+      <h2 id="lic-title" data-i18n="lic.title">Licencias y propiedad intelectual</h2>
+      <p data-i18n="lic.lede">Qué es de quién, con qué licencia se usa y qué no se usa en absoluto.</p>
+    </div>
+    <div class="licenses">
+      <article>
+        <h3 data-i18n="lic.code.t">El código</h3>
+        <p data-i18n="lic.code.p">Jutge Web es una obra derivada de la <a href="https://github.com/jutge-org/jutge-vscode">extensión oficial de Jutge.org</a>, © UPC, publicada con licencia <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>. Esa licencia permite copiar, modificar y redistribuir el código, también con fines comerciales, siempre que se conserve la licencia, se avise de los cambios y se mantengan los créditos.</p>
+      </article>
+      <article>
+        <h3 data-i18n="lic.fork.t">Esta versión</h3>
+        <p data-i18n="lic.fork.p">Se distribuye con la misma licencia, Apache 2.0. El archivo <a href="https://github.com/detorotodorov-alexander/jutge-vscode-online/blob/main/NOTICE">NOTICE</a> resume los cambios, y cada archivo modificado lo indica al principio. Los autores originales aparecen en los créditos.</p>
+      </article>
+      <article>
+        <h3 data-i18n="lic.tm.t">Nombres y logotipos</h3>
+        <p data-i18n="lic.tm.p">La licencia del código no cubre las marcas. “Jutge.org” y “UPC” se mencionan solo para describir la compatibilidad. No se usa el logotipo de Jutge.org ni el de la UPC: el icono de la extensión y los nueve círculos de esta página son diseños propios.</p>
+      </article>
+      <article>
+        <h3 data-i18n="lic.3p.t">Componentes de terceros</h3>
+        <p data-i18n="lic.3p.p"><a href="https://pypi.org/project/yogi/">yogi</a> (© UPC, Apache 2.0), incluido para leer la entrada en Python. <a href="https://pyodide.org">Pyodide</a> (MPL 2.0), que se descarga de jsDelivr. <a href="https://godbolt.org">Compiler Explorer</a>, un servicio externo con sus propias condiciones. Las tipografías tienen licencia SIL Open Font License.</p>
+      </article>
+    </div>
+  </section>
+
+  <hr class="rule">
+
   <!-- STORY -->
   <section class="wrap" aria-labelledby="story-title">
     <div class="story">
-      <blockquote id="story-title" data-i18n="story.q">El Jutge de la UPC estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
+      <blockquote id="story-title" data-i18n="story.q">El Jutge de la <svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="4"/><circle cx="15" cy="5" r="4"/><circle cx="25" cy="5" r="4"/><circle cx="5" cy="15" r="4"/><circle cx="15" cy="15" r="4"/><circle cx="25" cy="15" r="4"/><circle cx="5" cy="25" r="4"/><circle cx="15" cy="25" r="4"/><circle cx="25" cy="25" r="4"/></svg>UPC estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
       <div class="body">
         <p data-i18n="story.p1">Jutge.org es el juez en línea con el que se aprende a programar en la UPC, y su extensión oficial para VS Code es muy buena. Pero se queda en el escritorio, justo donde un editor en el navegador sería más útil: en tablets, en Chromebooks o en ordenadores donde no se puede instalar nada.</p>
         <p data-i18n="story.p2">Para que cualquiera pueda usar Jutge desde un navegador, adapté la extensión a vscode.dev: separé lo que depende del sistema, llevé Python al navegador con WebAssembly y conecté C++ y Haskell con Compiler Explorer. La desarrollé con la ayuda de Claude Code y está publicada en el Marketplace.</p>
@@ -414,7 +495,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       <p class="byline"><span data-i18n="foot.by">Hecho por</span> <a href="https://inverso.bio/about">Alexander de Toro Todorov</a></p>
     </div>
     <div class="legal">
-      <p data-i18n="foot.l1">Jutge Web es un proyecto no oficial y no está afiliado, patrocinado ni respaldado por Jutge.org ni por la Universitat Politècnica de Catalunya (UPC). “Jutge.org” se usa solo para describir la compatibilidad con ese servicio.</p>
+      <p data-i18n="foot.l1">Jutge Web es un proyecto no oficial y no está afiliado, patrocinado ni respaldado por Jutge.org ni por la Universitat Politècnica de Catalunya-BarcelonaTech (UPC). “Jutge.org” se usa solo para describir la compatibilidad con ese servicio.</p>
       <p><span data-i18n="foot.l2">Basado en la</span> <a href="https://github.com/jutge-org/jutge-vscode" data-i18n="foot.l3">extensión oficial de Jutge.org</a> <span data-i18n="foot.l4">(© UPC, Apache 2.0). Desarrollado con la ayuda de Claude Code.</span></p>
     </div>
   </div>
@@ -486,15 +567,25 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t4.c": "No surt del teu dispositiu. Només es descarrega Pyodide des de cdn.jsdelivr.net.",
       "t5.a": "El teu codi C++ o Haskell en provar-lo",
       "t5.c": "S’envien el codi i l’entrada del joc de proves, demanant que no es desin. El servidor es pot canviar a la configuració.",
-      "story.q": "El Jutge de la UPC estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
+      "story.q": "El Jutge de la <svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"4\"/><circle cx=\"15\" cy=\"5\" r=\"4\"/><circle cx=\"25\" cy=\"5\" r=\"4\"/><circle cx=\"5\" cy=\"15\" r=\"4\"/><circle cx=\"15\" cy=\"15\" r=\"4\"/><circle cx=\"25\" cy=\"15\" r=\"4\"/><circle cx=\"5\" cy=\"25\" r=\"4\"/><circle cx=\"15\" cy=\"25\" r=\"4\"/><circle cx=\"25\" cy=\"25\" r=\"4\"/></svg>UPC estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
       "story.p1": "Jutge.org és el jutge en línia amb què s’aprèn a programar a la UPC, i la seva extensió oficial per a VS Code és molt bona. Però es queda a l’escriptori, just on un editor al navegador seria més útil: en tauletes, en Chromebooks o en ordinadors on no es pot instal·lar res.",
       "story.p2": "Perquè tothom pugui fer servir Jutge des d’un navegador, vaig adaptar l’extensió a vscode.dev: vaig separar el que depèn del sistema, vaig portar Python al navegador amb WebAssembly i vaig connectar C++ i Haskell amb Compiler Explorer. La vaig desenvolupar amb l’ajuda de Claude Code i està publicada al Marketplace.",
       "story.p3": "El codi és obert, amb la mateixa llicència que l’original (Apache 2.0). Si als autors de Jutge els és útil, estaré encantat que l’integrin a l’extensió oficial.",
+      "lic.title": "Llicències i propietat intel·lectual",
+      "lic.lede": "Què és de qui, amb quina llicència s’utilitza i què no s’utilitza en absolut.",
+      "lic.code.t": "El codi",
+      "lic.code.p": "Jutge Web és una obra derivada de l’<a href=\"https://github.com/jutge-org/jutge-vscode\">extensió oficial de Jutge.org</a>, © UPC, publicada amb llicència <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">Apache 2.0</a>. Aquesta llicència permet copiar, modificar i redistribuir el codi, també amb finalitats comercials, sempre que es conservi la llicència, s’avisi dels canvis i es mantinguin els crèdits.",
+      "lic.fork.t": "Aquesta versió",
+      "lic.fork.p": "Es distribueix amb la mateixa llicència, Apache 2.0. El fitxer <a href=\"https://github.com/detorotodorov-alexander/jutge-vscode-online/blob/main/NOTICE\">NOTICE</a> resumeix els canvis, i cada fitxer modificat ho indica al principi. Els autors originals apareixen als crèdits.",
+      "lic.tm.t": "Noms i logotips",
+      "lic.tm.p": "La llicència del codi no cobreix les marques. “Jutge.org” i “UPC” només es mencionen per descriure la compatibilitat. No s’utilitza el logotip de Jutge.org ni el de la UPC: la icona de l’extensió i els nou cercles d’aquesta pàgina són dissenys propis.",
+      "lic.3p.t": "Components de tercers",
+      "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), inclòs per llegir l’entrada en Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), que es descarrega de jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, un servei extern amb les seves pròpies condicions. Les tipografies tenen llicència SIL Open Font License.",
       "cta.title": "Prova-la a vscode.dev",
       "cta.install2": "Instal·lar des del Marketplace",
       "cta.repo2": "Repositori a GitHub",
       "foot.by": "Fet per",
-      "foot.l1": "Jutge Web és un projecte no oficial i no està afiliat, patrocinat ni avalat per Jutge.org ni per la Universitat Politècnica de Catalunya (UPC). “Jutge.org” només s’utilitza per descriure la compatibilitat amb aquest servei.",
+      "foot.l1": "Jutge Web és un projecte no oficial i no està afiliat, patrocinat ni avalat per Jutge.org ni per la Universitat Politècnica de Catalunya-BarcelonaTech (UPC). “Jutge.org” només s’utilitza per descriure la compatibilitat amb aquest servei.",
       "foot.l2": "Basat en",
       "foot.l3": "l’extensió oficial de Jutge.org",
       "foot.l4": "(© UPC, Apache 2.0). Desenvolupat amb l’ajuda de Claude Code.",
@@ -563,15 +654,25 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t4.c": "It never leaves your device. Only Pyodide is downloaded, from cdn.jsdelivr.net.",
       "t5.a": "Your C++ or Haskell code when you test it",
       "t5.c": "The code and the testcase input are sent, asking for them not to be stored. The server can be changed in the settings.",
-      "story.q": "UPC’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
+      "story.q": "<svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"4\"/><circle cx=\"15\" cy=\"5\" r=\"4\"/><circle cx=\"25\" cy=\"5\" r=\"4\"/><circle cx=\"5\" cy=\"15\" r=\"4\"/><circle cx=\"15\" cy=\"15\" r=\"4\"/><circle cx=\"25\" cy=\"15\" r=\"4\"/><circle cx=\"5\" cy=\"25\" r=\"4\"/><circle cx=\"15\" cy=\"25\" r=\"4\"/><circle cx=\"25\" cy=\"25\" r=\"4\"/></svg>UPC’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
       "story.p1": "Jutge.org is the online judge used to learn programming at UPC, and its official VS Code extension is very good. But it stops at the desktop, right where a browser editor would be most useful: on tablets, on Chromebooks, or on computers where nothing can be installed.",
       "story.p2": "So that anyone can use Jutge from a browser, I adapted the extension to vscode.dev: I separated everything that depends on the system, brought Python to the browser with WebAssembly and connected C++ and Haskell through Compiler Explorer. I built it with the help of Claude Code, and it is published on the Marketplace.",
       "story.p3": "The code is open source, under the same license as the original (Apache 2.0). If it’s useful to Jutge’s authors, I’d be glad to see it merged into the official extension.",
+      "lic.title": "Licenses and intellectual property",
+      "lic.lede": "What belongs to whom, under which license it is used, and what isn’t used at all.",
+      "lic.code.t": "The code",
+      "lic.code.p": "Jutge Web is a derivative work of the <a href=\"https://github.com/jutge-org/jutge-vscode\">official Jutge.org extension</a>, © UPC, released under the <a href=\"https://www.apache.org/licenses/LICENSE-2.0\">Apache 2.0</a> license. That license allows copying, modifying and redistributing the code, commercially too, as long as the license is kept, changes are stated and credits are preserved.",
+      "lic.fork.t": "This version",
+      "lic.fork.p": "It is distributed under the same license, Apache 2.0. The <a href=\"https://github.com/detorotodorov-alexander/jutge-vscode-online/blob/main/NOTICE\">NOTICE</a> file summarizes the changes, and every modified file says so at the top. The original authors are listed in the credits.",
+      "lic.tm.t": "Names and logos",
+      "lic.tm.p": "The code license doesn’t cover trademarks. “Jutge.org” and “UPC” are mentioned only to describe compatibility. Neither the Jutge.org logo nor the UPC logo is used: the extension icon and the nine circles on this page are original designs.",
+      "lic.3p.t": "Third-party components",
+      "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), bundled to read input in Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), downloaded from jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, an external service with its own terms. The typefaces are licensed under the SIL Open Font License.",
       "cta.title": "Try it in vscode.dev",
       "cta.install2": "Install from the Marketplace",
       "cta.repo2": "GitHub repository",
       "foot.by": "Made by",
-      "foot.l1": "Jutge Web is an unofficial project and is not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC). “Jutge.org” is used only to describe compatibility with that service.",
+      "foot.l1": "Jutge Web is an unofficial project and is not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya-BarcelonaTech (UPC). “Jutge.org” is used only to describe compatibility with that service.",
       "foot.l2": "Based on the",
       "foot.l3": "official Jutge.org extension",
       "foot.l4": "(© UPC, Apache 2.0). Built with the help of Claude Code.",
@@ -790,6 +891,45 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 
   document.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => run(b.dataset.act)));
   narrowMq.addEventListener("change", () => { token++; renderStage(); if (current) run(current, true); });
+
+
+  // INVERSO wordmark: extruded 3D letters that float; И and Я spin like a whirlwind now and then
+  (function inverso() {
+    const a = document.querySelector(".inverso");
+    if (!a) return;
+    const DEPTH = 14;
+    const chars = [...a.textContent];
+    const glyphs = [];
+    a.textContent = "";
+    chars.forEach((ch, i) => {
+      const slot = document.createElement("span");
+      const g = ch === "И" || ch === "Я";
+      slot.className = "slot" + (g ? " g" : "");
+      slot.style.setProperty("--i", i);
+      slot.setAttribute("aria-hidden", "true");
+      let layers = "";
+      for (let d = DEPTH; d >= 1; d--) layers += `<span class="inv-l" style="--d:${d}">${ch}</span>`;
+      slot.innerHTML = `<span class="lt"><span class="spin">${layers}<span class="face">${ch}</span></span></span><span class="shadow"></span>`;
+      a.appendChild(slot);
+      if (g) glyphs.push(slot.querySelector(".spin"));
+    });
+    if (reduce || !glyphs.length || !Element.prototype.animate) return;
+    let turn = 0;
+    const whirl = el => el.animate(
+      [
+        { transform: "rotateY(0deg) translateY(0)" },
+        { transform: "rotateY(900deg) translateY(-.08em)", offset: .55 },
+        { transform: "rotateY(1440deg) translateY(0)" },
+      ],
+      { duration: 1600, easing: "cubic-bezier(.2,.75,.25,1)" }
+    );
+    // One glyph at a time, at irregular intervals; 4 full turns end in the same (mirrored) pose
+    const tick = () => {
+      if (!document.hidden) whirl(glyphs[turn++ % glyphs.length]);
+      setTimeout(tick, 4200 + Math.random() * 4500);
+    };
+    setTimeout(tick, 2500);
+  })();
 
   // Initial language: saved choice, else the browser's
   let saved = null;

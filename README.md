@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <sub>Unofficial project — not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC).</sub>
+  <sub>Unofficial project — not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya-BarcelonaTech (UPC).</sub>
 </p>
 
 ---
@@ -91,7 +91,7 @@ Built by **Alexander de Toro Todorov** ([inverso.bio](https://inverso.bio/about)
 Based on the official [Jutge.org VS Code extension](https://github.com/jutge-org/jutge-vscode) by
 [Alex Serrano](https://github.com/serteal), [Pau Fernández](https://github.com/pauek),
 [Joaquín Millán Aldaz](https://github.com/jma25l) and [Jordi Petit](https://github.com/jordi-petit),
-© Universitat Politècnica de Catalunya – BarcelonaTech (UPC).
+© Universitat Politècnica de Catalunya-BarcelonaTech (UPC).
 
 Licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for the list of changes.
 "Jutge.org" is used only to describe compatibility with that service.
