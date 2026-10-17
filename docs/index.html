@@ -214,6 +214,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 <header class="wrap top">
   <a class="brand" href="#top"><img src="assets/icon.png" alt="">Jutge Web</a>
   <div class="lang" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="ca" aria-pressed="false">CA</button>
     <button type="button" data-lang="es" aria-pressed="true">ES</button>
     <button type="button" data-lang="en" aria-pressed="false">EN</button>
   </div>
@@ -422,6 +423,83 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 <script>
 (() => {
   const I18N = {
+    ca: {
+      "hero.title": "Jutge.org, al navegador.<span>Una extensió per a vscode.dev i github.dev</span>",
+      "hero.lede": "L’extensió oficial de Jutge només funciona al VS Code d’escriptori. Aquesta versió no oficial fa que tot funcioni al VS Code per a la Web: iniciar sessió, llegir enunciats, provar jocs de proves i enviar solucions des de qualsevol navegador: tauletes, Chromebooks o ordinadors compartits.",
+      "cta.install": "Instal·lar des del Marketplace",
+      "cta.repo": "Veure el codi a GitHub",
+      "hero.note": "Projecte no oficial: no està afiliat ni avalat per Jutge.org ni per la UPC.",
+      "mock.unavailable": "No disponible al VS Code per a la Web",
+      "why.title": "Per què l’extensió oficial no funciona a la web",
+      "why.lede": "A vscode.dev, les extensions no s’executen al teu ordinador: s’executen dins del navegador, en un entorn aïllat. L’extensió oficial necessita quatre coses que allà no existeixen. Canvia d’entorn per veure-ho.",
+      "why.desktop": "VS Code d’escriptori",
+      "why.web": "vscode.dev (navegador)",
+      "need1.t": "Llegir i escriure els teus fitxers",
+      "need1.ok": "Fa servir <code>fs</code>, el sistema de fitxers de Node.js, per al teu codi i els jocs de proves.",
+      "need1.no": "No hi ha Node.js: <code>fs</code> no existeix, i els teus fitxers poden ser en un repositori de GitHub, no en un disc.",
+      "need2.t": "Executar compiladors",
+      "need2.ok": "Llança <code>g++</code>, <code>python</code> o <code>ghc</code> instal·lats a la teva màquina amb <code>child_process</code>.",
+      "need2.no": "Un navegador no pot llançar programes instal·lats al sistema.",
+      "need3.t": "Peces internes de Node.js",
+      "need3.ok": "Fa servir <code>os</code>, <code>path</code> i <code>Buffer</code> per a rutes, carpetes temporals i dades binàries.",
+      "need3.no": "Tampoc existeixen al navegador: el codi ni tan sols es pot carregar.",
+      "need4.t": "Dues extensions més",
+      "need4.ok": "Depèn de l’extensió de Python de Microsoft i d’un visor de PDF.",
+      "need4.no": "Cap de les dues funciona a la web, així que VS Code bloqueja la instal·lació.",
+      "why.vd": "A l’escriptori, tot correcte.",
+      "why.vw": "Al navegador, el Marketplace la marca com a no disponible i no es pot instal·lar.",
+      "how.title": "Què he canviat",
+      "how.lede": "La lògica de l’extensió (cursos, enunciats, enviaments, veredictes) és la mateixa. Tot el que depèn de l’entorn queda darrere d’una capa de plataforma amb dues implementacions, i VS Code carrega la que correspon.",
+      "how.shared": "Codi compartit",
+      "how.sharedp": "Vistes, client de l’API de Jutge, jocs de proves i enviaments. Els fitxers es llegeixen i s’escriuen amb <code>vscode.workspace.fs</code>, que funciona igual amb una carpeta local o amb un repositori de GitHub.",
+      "how.platform": "Capa de plataforma",
+      "how.platformp": "Un únic punt que decideix com s’executa el codi i on es desen les coses.",
+      "how.desk": "Escriptori",
+      "how.d1": "Igual que l’extensió oficial",
+      "how.d2": "Compiladors locals: g++, Python, GHC",
+      "how.webt": "Navegador",
+      "how.new": "nou",
+      "how.w1": "Python amb Pyodide (WebAssembly) en un Web Worker",
+      "how.w2": "C++ i Haskell amb l’API de Compiler Explorer",
+      "how.w3": "Errors al panell de sortida i subratllats al codi",
+      "sim.title": "Segueix el viatge del teu codi",
+      "sim.lede": "Tria una acció i mira què surt del teu dispositiu, cap a on i què s’envia exactament.",
+      "sim.py": "Provar en Python",
+      "sim.cpp": "Provar en C++ o Haskell",
+      "sim.submit": "Enviar a Jutge",
+      "sim.login": "Iniciar sessió",
+      "sim.desc": "Diagrama: el teu navegador conté l’editor i el worker de Python; a fora hi ha Jutge.org i Compiler Explorer.",
+      "sim.device": "El teu dispositiu · navegador",
+      "sim.editor": "Editor + Jutge Web",
+      "sim.worker": "Worker de Python",
+      "sim.jutge": "Compte, enunciats, enviaments",
+      "sim.log": "Registre de xarxa",
+      "sim.idle": "Tria una acció per començar.",
+      "sim.foot": "No hi ha telemetria: l’extensió només parla amb Jutge.org, amb Compiler Explorer (per a C++ i Haskell) i amb jsDelivr, d’on es descarrega Pyodide.",
+      "table.title": "On va cada dada",
+      "table.what": "Què", "table.where": "Destinació", "table.details": "Detalls",
+      "t1.a": "Correu i contrasenya",
+      "t1.c": "Per HTTPS, com a l’extensió oficial. Es desen al magatzem segur de VS Code, que a vscode.dev viu al teu navegador.",
+      "t2.a": "Enunciats i jocs de proves", "t2.c": "Es descarreguen amb la teva sessió.",
+      "t3.a": "El teu codi en enviar-lo", "t3.c": "Exactament igual que a l’extensió oficial.",
+      "t4.a": "El teu codi Python en provar-lo", "t4.b": "El teu navegador",
+      "t4.c": "No surt del teu dispositiu. Només es descarrega Pyodide des de cdn.jsdelivr.net.",
+      "t5.a": "El teu codi C++ o Haskell en provar-lo",
+      "t5.c": "S’envien el codi i l’entrada del joc de proves, demanant que no es desin. El servidor es pot canviar a la configuració.",
+      "story.q": "El Jutge de la UPC estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
+      "story.p1": "Jutge.org és el jutge en línia amb què s’aprèn a programar a la UPC, i la seva extensió oficial per a VS Code és molt bona. Però es queda a l’escriptori, just on un editor al navegador seria més útil: en tauletes, en Chromebooks o en ordinadors on no es pot instal·lar res.",
+      "story.p2": "Perquè tothom pugui fer servir Jutge des d’un navegador, vaig adaptar l’extensió a vscode.dev: vaig separar el que depèn del sistema, vaig portar Python al navegador amb WebAssembly i vaig connectar C++ i Haskell amb Compiler Explorer. La vaig desenvolupar amb l’ajuda de Claude Code i està publicada al Marketplace.",
+      "story.p3": "El codi és obert, amb la mateixa llicència que l’original (Apache 2.0). Si als autors de Jutge els és útil, estaré encantat que l’integrin a l’extensió oficial.",
+      "cta.title": "Prova-la a vscode.dev",
+      "cta.install2": "Instal·lar des del Marketplace",
+      "cta.repo2": "Repositori a GitHub",
+      "foot.by": "Fet per",
+      "foot.l1": "Jutge Web és un projecte no oficial i no està afiliat, patrocinat ni avalat per Jutge.org ni per la Universitat Politècnica de Catalunya (UPC). “Jutge.org” només s’utilitza per descriure la compatibilitat amb aquest servei.",
+      "foot.l2": "Basat en",
+      "foot.l3": "l’extensió oficial de Jutge.org",
+      "foot.l4": "(© UPC, Apache 2.0). Desenvolupat amb l’ajuda de Claude Code.",
+      "log.count": n => `${n} ${n === 1 ? "petició" : "peticions"}`,
+    },
     en: {
       "hero.title": "Jutge.org, in the browser.<span>An extension for vscode.dev and github.dev</span>",
       "hero.lede": "The official Jutge extension only runs on desktop VS Code. This unofficial version makes everything work in VS Code for the Web: sign in, read statements, run testcases and submit solutions, from any browser: tablets, Chromebooks or shared computers.",
@@ -504,6 +582,12 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   // Simulation scripts: steps along wires + log lines (per language)
   const SCRIPTS = {
     py: {
+      ca: [
+        ["none", "Cap petició de xarxa: el codi s’executa al teu navegador."],
+        ["get", "GET cdn.jsdelivr.net/pyodide/…", "només la primera vegada · descarrega Pyodide (~10 MB), no envia res teu"],
+        ["quiet", "Worker: main.py + entrada del joc de proves → sortida"],
+        ["quiet", "Sortida comparada amb l’esperada · Passed ✓"],
+      ],
       es: [
         ["none", "Sin peticiones de red: el código se ejecuta en tu navegador."],
         ["get", "GET cdn.jsdelivr.net/pyodide/…", "solo la primera vez · descarga Pyodide (~10 MB), no envía nada tuyo"],
@@ -519,6 +603,11 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       path: ["w-py"], nodes: ["n-editor", "n-pyodide", "n-device"], requests: 0,
     },
     cpp: {
+      ca: [
+        ["post", "POST godbolt.org/api/compiler/g142/compile", "envia: codi font + entrada del joc de proves · allowStoreCodeDebug: false"],
+        ["quiet", "← compilació + execució: sortida, errors i avisos"],
+        ["quiet", "Errors marcats a la línia correcta de l’editor"],
+      ],
       es: [
         ["post", "POST godbolt.org/api/compiler/g142/compile", "envía: código fuente + entrada del juego de prueba · allowStoreCodeDebug: false"],
         ["quiet", "← compilación + ejecución: salida, errores y avisos"],
@@ -532,6 +621,11 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       path: ["w-ce"], nodes: ["n-editor", "n-ce"], requests: 1,
     },
     submit: {
+      ca: [
+        ["post", "POST api.jutge.org/api · student.submissions.submit", "envia: el teu codi + id del problema + compilador · amb la teva sessió"],
+        ["post", "POST api.jutge.org/api · student.submissions.get", "consulta el veredicte cada 2 s"],
+        ["quiet", "← Veredicte: AC ✓"],
+      ],
       es: [
         ["post", "POST api.jutge.org/api · student.submissions.submit", "envía: tu código + id del problema + compilador · con tu sesión"],
         ["post", "POST api.jutge.org/api · student.submissions.get", "consulta el veredicto cada 2 s"],
@@ -545,6 +639,11 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       path: ["w-jutge"], nodes: ["n-editor", "n-jutge"], requests: 2,
     },
     login: {
+      ca: [
+        ["post", "POST api.jutge.org/api · auth.login", "envia: correu + contrasenya, per HTTPS"],
+        ["quiet", "← token de sessió"],
+        ["quiet", "Desat al magatzem segur de VS Code, al teu navegador"],
+      ],
       es: [
         ["post", "POST api.jutge.org/api · auth.login", "envía: email + contraseña, por HTTPS"],
         ["quiet", "← token de sesión"],
@@ -598,7 +697,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     stageSvg.querySelectorAll("[data-i18n]").forEach(el => {
       const k = el.dataset.i18n;
       if (!(k in original)) original[k] = el.innerHTML;
-      if (lang === "en" && I18N.en[k]) el.innerHTML = I18N.en[k];
+      if (lang !== "es" && I18N[lang][k]) el.innerHTML = I18N[lang][k];
     });
   }
 
@@ -610,7 +709,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     document.documentElement.lang = next;
     document.querySelectorAll("[data-i18n]").forEach(el => {
       const k = el.dataset.i18n;
-      el.innerHTML = next === "es" ? original[k] : (I18N.en[k] ?? original[k]);
+      el.innerHTML = next === "es" ? original[k] : (I18N[next][k] ?? original[k]);
     });
     document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
     try { localStorage.setItem("jw-lang", next); } catch (e) {}
@@ -671,7 +770,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
     document.querySelectorAll(".wire").forEach(w => w.classList.remove("lit"));
     log.innerHTML = "";
     const n = s.requests;
-    count.textContent = lang === "en" ? I18N.en["log.count"](n) : `${n} ${n === 1 ? "petición" : "peticiones"}`;
+    count.textContent = lang === "es" ? `${n} ${n === 1 ? "petición" : "peticiones"}` : I18N[lang]["log.count"](n);
     s.nodes.forEach(id => document.getElementById(id).classList.add("active"));
     const lines = s[lang];
     if (instant) { lines.forEach(line); s.path.forEach(id => document.getElementById(id).classList.add("lit")); return; }
@@ -695,7 +794,8 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   // Initial language: saved choice, else the browser's
   let saved = null;
   try { saved = localStorage.getItem("jw-lang"); } catch (e) {}
-  const initial = saved || ((navigator.language || "es").toLowerCase().startsWith("es") || navigator.language.toLowerCase().startsWith("ca") ? "es" : "en");
+  const nav = (navigator.language || "es").toLowerCase();
+  const initial = ["ca", "es", "en"].includes(saved) ? saved : nav.startsWith("ca") ? "ca" : nav.startsWith("es") ? "es" : "en";
   if (initial !== "es") setLang(initial);
 })();
 </script>
