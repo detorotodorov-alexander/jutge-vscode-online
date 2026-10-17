@@ -196,26 +196,17 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 .inverso { font-family: "Unbounded", sans-serif; font-weight: 800; font-size: clamp(2.6rem, 7vw, 6rem); letter-spacing: -0.03em; text-decoration: none; color: #ECE7E4; line-height: 1; display: inline-flex; perspective: 900px; padding: .25em 0 .3em; }
 .inverso .g { color: #7D6B75; }
 /* 3D letters (built by the script below; plain text without JS) */
-.inverso .slot { position: relative; display: inline-block; --face: #ECE7E4; --side: #6E6460; --side-dark: #2E2725; }
+.inverso .slot { position: relative; display: inline-block; margin: 0 .045em; --face: #ECE7E4; --side: #6E6460; --side-dark: #2E2725; }
 .inverso .slot.g { --face: #8C7884; --side: #4E3E47; --side-dark: #251C21; }
-.inverso .lt { display: inline-block; transform-style: preserve-3d; animation: inv-float 5.2s ease-in-out infinite; animation-delay: calc(var(--i) * -.62s); }
+.inverso .lt { display: inline-block; transform-style: preserve-3d; transform: rotateX(12deg) rotateY(-14deg); will-change: transform; }
 .inverso .spin { display: inline-block; position: relative; transform-style: preserve-3d; }
 .inverso .face { position: relative; display: block; color: var(--face); }
 .inverso .inv-l { position: absolute; inset: 0; color: color-mix(in srgb, var(--side) calc(100% - var(--d) * 6%), var(--side-dark)); transform: translateZ(calc(var(--d) * -.011em)); }
-.inverso .shadow { position: absolute; left: 8%; right: 8%; bottom: -.12em; height: .1em; border-radius: 50%; background: radial-gradient(closest-side, #000c, #0000); animation: inv-shadow 5.2s ease-in-out infinite; animation-delay: calc(var(--i) * -.62s); }
+.inverso .shadow { position: absolute; left: 8%; right: 8%; bottom: -.12em; height: .1em; border-radius: 50%; background: radial-gradient(closest-side, #000c, #0000); will-change: transform, opacity; }
 .inverso:hover .slot { --face: #fff; }
 .inverso:hover .slot.g { --face: #A08E98; }
-@keyframes inv-float {
-  0%, 100% { transform: translateY(0) rotateX(14deg) rotateY(-16deg); }
-  50% { transform: translateY(-.1em) rotateX(8deg) rotateY(-8deg); }
-}
-@keyframes inv-shadow {
-  0%, 100% { transform: scaleX(1); opacity: .9; }
-  50% { transform: scaleX(.78); opacity: .5; }
-}
 @media (prefers-reduced-motion: reduce) {
-  .inverso .lt { animation: none; transform: rotateX(12deg) rotateY(-14deg); }
-  .inverso .shadow { animation: none; }
+  .inverso .lt { transform: rotateX(12deg) rotateY(-14deg) !important; }
 }
 .byline { margin-top: 1rem; color: #9C918C; font-size: 1rem; }
 .byline a { color: #ECE7E4; text-underline-offset: 3px; }
@@ -894,7 +885,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   narrowMq.addEventListener("change", () => { token++; renderStage(); if (current) run(current, true); });
 
 
-  // INVERSO wordmark: extruded 3D letters that float; И and Я spin like a whirlwind now and then
+  // INVERSO wordmark: extruded 3D letters that float irregularly; И and Я whirl when swept quickly with the pointer
   (function inverso() {
     const a = document.querySelector(".inverso");
     if (!a) return;
@@ -914,22 +905,69 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       a.appendChild(slot);
       if (g) glyphs.push(slot.querySelector(".spin"));
     });
-    if (reduce || !glyphs.length || !Element.prototype.animate) return;
-    let turn = 0;
-    const whirl = el => el.animate(
-      [
-        { transform: "rotateY(0deg) translateY(0)" },
-        { transform: "rotateY(900deg) translateY(-.08em)", offset: .55 },
-        { transform: "rotateY(1440deg) translateY(0)" },
-      ],
-      { duration: 1600, easing: "cubic-bezier(.2,.75,.25,1)" }
-    );
-    // One glyph at a time, at irregular intervals; 4 full turns end in the same (mirrored) pose
-    const tick = () => {
-      if (!document.hidden) whirl(glyphs[turn++ % glyphs.length]);
-      setTimeout(tick, 4200 + Math.random() * 4500);
+    if (reduce) return;
+
+    // Irregular levitation: each letter follows its own mix of slow waves
+    const rnd = (lo, hi) => lo + Math.random() * (hi - lo);
+    const slots = [...a.querySelectorAll(".slot")].map(slot => ({
+      lt: slot.querySelector(".lt"),
+      sh: slot.querySelector(".shadow"),
+      f1: rnd(.11, .2), p1: rnd(0, 6.3), a1: rnd(.05, .1),
+      f2: rnd(.27, .46), p2: rnd(0, 6.3), a2: rnd(.015, .035),
+      f3: rnd(.07, .14), p3: rnd(0, 6.3),
+      f4: rnd(.09, .17), p4: rnd(0, 6.3),
+    }));
+    let visible = true;
+    new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(a);
+    const TAU = Math.PI * 2;
+    const frame = now => {
+      if (visible) {
+        const t = now / 1000;
+        for (const s of slots) {
+          const lift = s.a1 * (1 + Math.sin(TAU * s.f1 * t + s.p1)) / 2 + s.a2 * (1 + Math.sin(TAU * s.f2 * t + s.p2)) / 2;
+          const rx = 11 + 5 * Math.sin(TAU * s.f3 * t + s.p3);
+          const ry = -12 + 8 * Math.sin(TAU * s.f4 * t + s.p4);
+          const rz = 2.2 * Math.sin(TAU * s.f3 * 1.7 * t + s.p4);
+          s.lt.style.transform = `translateY(${-lift}em) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg)`;
+          const k = lift / .135;
+          s.sh.style.transform = `scaleX(${1 - .28 * k})`;
+          s.sh.style.opacity = String(.9 - .45 * k);
+        }
+      }
+      requestAnimationFrame(frame);
     };
-    setTimeout(tick, 2500);
+    requestAnimationFrame(frame);
+
+    // И and Я whirl only when the pointer sweeps across them quickly (not when it rests on them)
+    if (!glyphs.length || !Element.prototype.animate) return;
+    let lastX = 0, lastY = 0, lastT = 0, speed = 0, dirX = 1;
+    window.addEventListener("pointermove", e => {
+      const now = performance.now(), dt = now - lastT;
+      if (dt > 0 && dt < 120) {
+        const v = Math.hypot(e.clientX - lastX, e.clientY - lastY) / dt;
+        speed = speed * .4 + v * .6;
+        if (Math.abs(e.clientX - lastX) > 1) dirX = Math.sign(e.clientX - lastX);
+      } else {
+        speed = 0;
+      }
+      lastX = e.clientX; lastY = e.clientY; lastT = now;
+    }, { passive: true });
+    const SPEED = .55; // px per ms
+    glyphs.forEach(el => {
+      el.closest(".slot").addEventListener("pointerenter", () => {
+        if (speed < SPEED || el.getAnimations().length) return;
+        const turns = Math.min(6, 3 + Math.round(speed));
+        const end = dirX * 360 * turns;
+        el.animate(
+          [
+            { transform: "rotateY(0deg) translateY(0)" },
+            { transform: `rotateY(${end * .62}deg) translateY(-.08em)`, offset: .55 },
+            { transform: `rotateY(${end}deg) translateY(0)` },
+          ],
+          { duration: 1100 + turns * 140, easing: "cubic-bezier(.2,.75,.25,1)" }
+        );
+      });
+    });
   })();
 
   // Initial language: saved choice, else the browser's
