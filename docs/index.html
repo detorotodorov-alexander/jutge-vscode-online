@@ -183,7 +183,8 @@ section { padding-block: clamp(3.5rem, 9vw, 7rem); }
 
 /* ---------- story ---------- */
 .story { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
-.story blockquote .dots { height: .78em; width: .78em; margin-right: .18em; vertical-align: -.02em; fill: #2367C9; }
+.story blockquote .upc { white-space: nowrap; }
+.story blockquote .dots { height: .72em; width: .72em; margin-right: .2em; vertical-align: -.015em; fill: currentColor; }
 .story blockquote { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; }
 .story .body p { font-size: 1.1rem; }
 
@@ -469,7 +470,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   <!-- STORY -->
   <section class="wrap" aria-labelledby="story-title">
     <div class="story">
-      <blockquote id="story-title" data-i18n="story.q">El Jutge de la <svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="4"/><circle cx="15" cy="5" r="4"/><circle cx="25" cy="5" r="4"/><circle cx="5" cy="15" r="4"/><circle cx="15" cy="15" r="4"/><circle cx="25" cy="15" r="4"/><circle cx="5" cy="25" r="4"/><circle cx="15" cy="25" r="4"/><circle cx="25" cy="25" r="4"/></svg>UPC estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
+      <blockquote id="story-title" data-i18n="story.q">El Jutge de la <span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span> estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
       <div class="body">
         <p data-i18n="story.p1">Jutge.org es el juez en línea con el que se aprende a programar en la UPC, y su extensión oficial para VS Code es muy buena. Pero se queda en el escritorio, justo donde un editor en el navegador sería más útil: en tablets, en Chromebooks o en ordenadores donde no se puede instalar nada.</p>
         <p data-i18n="story.p2">Para que cualquiera pueda usar Jutge desde un navegador, adapté la extensión a vscode.dev: separé lo que depende del sistema, llevé Python al navegador con WebAssembly y conecté C++ y Haskell con Compiler Explorer. La desarrollé con la ayuda de Claude Code y está publicada en el Marketplace.</p>
@@ -567,7 +568,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t4.c": "No surt del teu dispositiu. Només es descarrega Pyodide des de cdn.jsdelivr.net.",
       "t5.a": "El teu codi C++ o Haskell en provar-lo",
       "t5.c": "S’envien el codi i l’entrada del joc de proves, demanant que no es desin. El servidor es pot canviar a la configuració.",
-      "story.q": "El Jutge de la <svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"4\"/><circle cx=\"15\" cy=\"5\" r=\"4\"/><circle cx=\"25\" cy=\"5\" r=\"4\"/><circle cx=\"5\" cy=\"15\" r=\"4\"/><circle cx=\"15\" cy=\"15\" r=\"4\"/><circle cx=\"25\" cy=\"15\" r=\"4\"/><circle cx=\"5\" cy=\"25\" r=\"4\"/><circle cx=\"15\" cy=\"25\" r=\"4\"/><circle cx=\"25\" cy=\"25\" r=\"4\"/></svg>UPC estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
+      "story.q": "El Jutge de la <span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span> estava a mitges: només arribava a l’escriptori. Vaig decidir acabar-lo.",
       "story.p1": "Jutge.org és el jutge en línia amb què s’aprèn a programar a la UPC, i la seva extensió oficial per a VS Code és molt bona. Però es queda a l’escriptori, just on un editor al navegador seria més útil: en tauletes, en Chromebooks o en ordinadors on no es pot instal·lar res.",
       "story.p2": "Perquè tothom pugui fer servir Jutge des d’un navegador, vaig adaptar l’extensió a vscode.dev: vaig separar el que depèn del sistema, vaig portar Python al navegador amb WebAssembly i vaig connectar C++ i Haskell amb Compiler Explorer. La vaig desenvolupar amb l’ajuda de Claude Code i està publicada al Marketplace.",
       "story.p3": "El codi és obert, amb la mateixa llicència que l’original (Apache 2.0). Si als autors de Jutge els és útil, estaré encantat que l’integrin a l’extensió oficial.",
@@ -654,7 +655,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "t4.c": "It never leaves your device. Only Pyodide is downloaded, from cdn.jsdelivr.net.",
       "t5.a": "Your C++ or Haskell code when you test it",
       "t5.c": "The code and the testcase input are sent, asking for them not to be stored. The server can be changed in the settings.",
-      "story.q": "<svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"4\"/><circle cx=\"15\" cy=\"5\" r=\"4\"/><circle cx=\"25\" cy=\"5\" r=\"4\"/><circle cx=\"5\" cy=\"15\" r=\"4\"/><circle cx=\"15\" cy=\"15\" r=\"4\"/><circle cx=\"25\" cy=\"15\" r=\"4\"/><circle cx=\"5\" cy=\"25\" r=\"4\"/><circle cx=\"15\" cy=\"25\" r=\"4\"/><circle cx=\"25\" cy=\"25\" r=\"4\"/></svg>UPC’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
+      "story.q": "<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
       "story.p1": "Jutge.org is the online judge used to learn programming at UPC, and its official VS Code extension is very good. But it stops at the desktop, right where a browser editor would be most useful: on tablets, on Chromebooks, or on computers where nothing can be installed.",
       "story.p2": "So that anyone can use Jutge from a browser, I adapted the extension to vscode.dev: I separated everything that depends on the system, brought Python to the browser with WebAssembly and connected C++ and Haskell through Compiler Explorer. I built it with the help of Claude Code, and it is published on the Marketplace.",
       "story.p3": "The code is open source, under the same license as the original (Apache 2.0). If it’s useful to Jutge’s authors, I’d be glad to see it merged into the official extension.",
