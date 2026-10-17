@@ -22,9 +22,9 @@ but it only runs on **desktop** VS Code. It depends on Node.js, the local file s
 locally installed compilers, none of which exist in the browser, so in vscode.dev it simply
 isn't available.
 
-That leaves out exactly the situations where a browser editor is most useful: a **tablet**, a
-**Chromebook**, a **lab or library computer** where you can't install anything, or just a
-quick exercise away from your own machine.
+That leaves out exactly the situations where a browser editor is most useful: **tablets**,
+**Chromebooks**, **lab or library computers** where nothing can be installed, or any device
+where a full development setup isn't available.
 
 **Jutge Web** is a fork of the official extension, rebuilt so that the whole workflow runs in
 the browser. If you use desktop VS Code, the official extension is the better choice.
@@ -40,7 +40,7 @@ the browser. If you use desktop VS Code, the official extension is the better ch
 
 ## How code runs in the browser
 
-There is no compiler on a tablet, so each language takes a different route:
+A browser can't run local compilers, so each language takes a different route:
 
 | Language    | Where it runs                                                                                                                                                                                                                          |
 | ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -95,6 +95,8 @@ Based on the official [Jutge.org VS Code extension](https://github.com/jutge-org
 
 Licensed under the [Apache License 2.0](LICENSE). See [NOTICE](NOTICE) for the list of changes.
 "Jutge.org" is used only to describe compatibility with that service.
+
+More about how it works: [project website](https://detorotodorov-alexander.github.io/jutge-vscode-online/).
 
 Found a bug? [Open an issue](https://github.com/detorotodorov-alexander/jutge-vscode-online/issues).
 

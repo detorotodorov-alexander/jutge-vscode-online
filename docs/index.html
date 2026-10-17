@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jutge Web — Jutge.org en vscode.dev</title>
+<meta name="description" content="Extensión no oficial que lleva Jutge.org a VS Code para la Web (vscode.dev, github.dev). Por qué la oficial no funciona en el navegador y cómo se ha resuelto.">
+<meta property="og:title" content="Jutge Web — Jutge.org en vscode.dev">
+<meta property="og:description" content="Resuelve problemas de Jutge.org desde cualquier navegador, sin instalar nada.">
+<meta property="og:image" content="https://detorotodorov-alexander.github.io/jutge-vscode-online/assets/icon.png">
+<link rel="icon" href="assets/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #EEF1F4;
+  --paper-2: #E3E8ED;
+  --ink: #0F1218;
+  --ink-2: #3A4250;
+  --muted: #5E6878;
+  --wig: #D9DEE5;
+  --wig-shade: #AEB6C2;
+  --green: #157A44;
+  --green-bright: #4ADE80;
+  --red: #B4382A;
+  --line: #C9D0D8;
+  --display: "Rajdhani", "Arial Narrow", sans-serif;
+  --body: "Instrument Sans", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --measure: 66ch;
+  --gutter: clamp(1.1rem, 4vw, 3rem);
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-inline: var(--gutter); }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; margin: 0; }
+h2 { font-size: clamp(2rem, 4.4vw, 3.1rem); }
+h3 { font-size: 1.45rem; font-weight: 600; }
+p { margin: 0 0 1em; max-width: var(--measure); }
+code { font-family: var(--mono); font-size: .88em; background: var(--paper-2); padding: .1em .35em; border-radius: 4px; }
+
+/* ---------- top bar ---------- */
+.top { display: flex; padding-top: 1.1rem; align-items: center; justify-content: space-between; padding-block: 1.1rem; }
+.brand { display: flex; align-items: center; gap: .7rem; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 1.35rem; }
+.brand img { width: 36px; height: 36px; border-radius: 9px; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: #fff8; }
+.lang button { font: 600 .82rem var(--body); border: 0; background: none; padding: .3rem .7rem; border-radius: 999px; cursor: pointer; color: var(--muted); }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-block: clamp(2.5rem, 7vw, 6rem) clamp(3rem, 8vw, 6.5rem); }
+.hero h1 { font-size: clamp(3rem, 8vw, 5.6rem); }
+.hero h1 span { display: block; color: var(--ink-2); font-weight: 500; font-size: .52em; margin-top: .4em; letter-spacing: 0; }
+.lede { font-size: 1.2rem; color: var(--ink-2); margin-top: 1.4rem; max-width: 34em; }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+.btn { display: inline-flex; align-items: center; gap: .6rem; padding: .85rem 1.25rem; border-radius: 10px; font: 600 1rem var(--body); text-decoration: none; border: 1.5px solid var(--ink); transition: transform .15s ease, background .15s ease; }
+.btn:hover { transform: translateY(-1px); }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.primary:hover { background: #232a36; }
+.btn.ghost:hover { background: #fff; }
+.btn svg { width: 18px; height: 18px; flex: none; }
+.small { font-size: .9rem; color: var(--muted); margin-top: 1rem; }
+
+/* mock of the vscode.dev extensions view */
+.mock { background: #1E1E1E; color: #CCCCCC; border-radius: 14px; overflow: hidden; box-shadow: 0 30px 60px -30px #0F121866, 0 0 0 1px #0F121822; font: 14.5px/1.45 var(--body); }
+.mock-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: #2B2B2B; }
+.mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: #555; display: block; }
+.mock-bar span { margin-left: 10px; font-size: 12px; color: #9D9D9D; }
+.mock-search { margin: 12px; padding: 6px 10px; background: #313131; border: 1px solid #3C3C3C; border-radius: 4px; color: #E0E0E0; }
+.ext { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; padding: 12px 14px; border-top: 1px solid #2A2A2A; align-items: start; }
+.ext .ico { width: 44px; height: 44px; border-radius: 8px; }
+.ext .ico.placeholder { background: repeating-linear-gradient(135deg, #3A3A3A 0 6px, #333 6px 12px); }
+.ext b { color: #FFF; font-weight: 600; display: block; }
+.ext small { color: #9D9D9D; display: block; }
+.ext .note { color: #F48771; font-size: 12px; margin-top: 4px; display: flex; gap: 6px; align-items: center; }
+.ext .pill { font-size: 12px; padding: 3px 9px; border-radius: 3px; white-space: nowrap; }
+.ext .pill.off { background: #3A3A3A; color: #8A8A8A; }
+.ext .pill.on { background: #0E639C; color: #fff; }
+.ext.dim b, .ext.dim small { opacity: .6; }
+
+/* ---------- sections ---------- */
+section { padding-block: clamp(3.5rem, 9vw, 7rem); }
+.section-head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; margin-bottom: 2.4rem; }
+.section-head p { font-size: 1.12rem; color: var(--ink-2); }
+.rule { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+/* environment switch */
+.switch { display: inline-flex; background: var(--paper-2); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 1.6rem; }
+.switch button { font: 600 1rem var(--body); border: 0; padding: .6rem 1.1rem; border-radius: 9px; background: none; color: var(--ink-2); cursor: pointer; }
+.switch button[aria-pressed="true"] { background: #fff; color: var(--ink); box-shadow: 0 1px 0 #0F121814, 0 2px 8px -4px #0F121844; }
+.needs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.needs li { padding: 1.3rem 1.4rem 1.4rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 2.2rem 1fr; gap: .2rem .8rem; }
+.needs li:nth-child(odd) { padding-right: 2rem; border-right: 1px solid var(--line); }
+.needs li:nth-child(even) { padding-left: 2rem; }
+.mark::after { content: "✓"; }
+[data-env="web"] .mark::after { content: "✕"; }
+.mark { grid-row: span 2; width: 1.9rem; height: 1.9rem; border-radius: 50%; display: grid; place-items: center; font: 700 1rem var(--body); color: #fff; background: var(--green); transition: background .25s ease, transform .25s ease; }
+.needs h3 { font-size: 1.25rem; }
+.needs p { margin: 0; color: var(--ink-2); font-size: .98rem; }
+.needs .why { color: var(--red); font-weight: 500; }
+[data-env="desktop"] .needs .why { display: none; }
+[data-env="web"] .needs .mark { background: var(--red); }
+[data-env="desktop"] .needs .ok { display: block; }
+[data-env="web"] .needs .ok { display: none; }
+.verdict { margin-top: 1.8rem; font-family: var(--display); font-weight: 600; font-size: 1.45rem; }
+.verdict .w { display: none; color: var(--red); }
+[data-env="web"] .verdict .w { display: inline; }
+[data-env="web"] .verdict .d { display: none; }
+
+/* ---------- architecture ---------- */
+.arch { display: grid; grid-template-columns: 1fr; gap: 0; max-width: 860px; }
+.layer { border: 1.5px solid var(--ink); border-radius: 12px; padding: 1.1rem 1.3rem; background: #fff; }
+.layer h3 { font-size: 1.2rem; }
+.layer p { margin: .3rem 0 0; color: var(--ink-2); font-size: .97rem; }
+.joint { height: 26px; margin-left: 2rem; border-left: 1.5px solid var(--ink); }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.split .layer { background: var(--paper); }
+.split .layer.web { border-color: var(--green); box-shadow: inset 0 0 0 1.5px var(--green); background: #fff; }
+.split ul { margin: .55rem 0 0; padding-left: 1.1rem; color: var(--ink-2); font-size: .95rem; }
+.tag { display: inline-block; font: 600 .78rem var(--body); padding: .15rem .5rem; border-radius: 5px; background: var(--paper-2); color: var(--ink-2); margin-left: .4rem; vertical-align: middle; }
+.layer.web .tag { background: #157A4418; color: var(--green); }
+
+/* ---------- simulator (the dark, bold moment) ---------- */
+.sim { background: var(--ink); color: #E6EAF0; }
+.sim h2 { color: #fff; }
+.sim .section-head p { color: #B7C0CD; }
+.sim-controls { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.6rem; }
+.sim-controls button { font: 600 1rem var(--body); border: 1.5px solid #3A4352; background: #171C25; color: #E6EAF0; padding: .7rem 1.1rem; border-radius: 10px; cursor: pointer; display: inline-flex; gap: .55rem; align-items: center; }
+.sim-controls button:hover { border-color: #6B7689; }
+.sim-controls button[aria-pressed="true"] { border-color: var(--green-bright); color: #fff; }
+.sim-controls .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green-bright); }
+.sim-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 1.5rem; align-items: stretch; }
+.stage { position: relative; border: 1px solid #262D3A; border-radius: 16px; background: #131820; min-height: 360px; }
+.stage svg { width: 100%; height: 100%; display: block; }
+.node rect { fill: #1A202B; stroke: #3A4352; stroke-width: 1.5; }
+.node.device rect { fill: none; stroke: #4ADE8055; stroke-dasharray: 6 6; }
+.node text { fill: #E6EAF0; font: 600 15px var(--body); }
+.node .sub { fill: #8F9AAB; font: 400 12.5px var(--body); }
+.node.active rect { stroke: var(--green-bright); }
+.node.device.active rect { stroke: var(--green-bright); stroke-dasharray: 6 6; }
+.wire { stroke: #2E3644; stroke-width: 2; fill: none; }
+.wire.lit { stroke: #4ADE8099; }
+.packet { fill: var(--green-bright); filter: drop-shadow(0 0 6px #4ADE80); }
+.log { border: 1px solid #262D3A; border-radius: 16px; background: #0B0E13; padding: 1rem 1.1rem; font: 13px/1.6 var(--mono); color: #C8D0DC; min-height: 360px; display: flex; flex-direction: column; }
+.log-title { font: 600 .9rem var(--body); color: #8F9AAB; margin-bottom: .6rem; display: flex; justify-content: space-between; }
+.log ol { list-style: none; margin: 0; padding: 0; display: grid; gap: .55rem; }
+.log li { opacity: 0; transform: translateY(4px); transition: opacity .25s ease, transform .25s ease; }
+.log li.in { opacity: 1; transform: none; }
+.log .verb { color: var(--green-bright); }
+.log .host { color: #fff; }
+.log .quiet { color: #7C8798; }
+.log .none { color: #F2C94C; }
+.sim-foot { margin-top: 1.4rem; color: #B7C0CD; font-size: .98rem; max-width: var(--measure); }
+
+/* ---------- data table ---------- */
+.data { width: 100%; border-collapse: collapse; font-size: .98rem; }
+.data th, .data td { text-align: left; padding: .95rem 1rem .95rem 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.data th { font: 600 .95rem var(--body); color: var(--muted); }
+.data td:first-child { font-weight: 600; width: 30%; }
+.dest { white-space: nowrap; display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; }
+.dest::before { content: ""; width: .6rem; height: .6rem; border-radius: 50%; background: var(--c, var(--ink)); }
+.dest.local { --c: var(--green); }
+.dest.jutge { --c: #3B6FD8; }
+.dest.ce { --c: #D98A1E; }
+
+/* ---------- story ---------- */
+.story { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+.story blockquote { margin: 0; font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.12; }
+.story .body p { font-size: 1.1rem; }
+
+/* ---------- final CTA + footer ---------- */
+.cta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1.5rem; padding-block: 3rem; }
+.cta h2 { font-size: clamp(1.8rem, 3.6vw, 2.5rem); }
+footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
+.foot { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: end; }
+.inverso { font-family: "Unbounded", sans-serif; font-weight: 800; font-size: clamp(2.4rem, 7vw, 4.4rem); letter-spacing: -0.03em; text-decoration: none; color: #ECE7E4; line-height: 1; display: inline-block; }
+.inverso .g { color: #7D6B75; }
+.inverso:hover .g { color: #A08E98; }
+.byline { margin-top: 1rem; color: #9C918C; font-size: 1rem; }
+.byline a { color: #ECE7E4; text-underline-offset: 3px; }
+.legal { font-size: .85rem; color: #9C918C; line-height: 1.55; }
+.legal p { margin: 0 0 .7em; }
+.legal a { color: #C9C1BC; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .hero, .story, .foot, .sim-grid { grid-template-columns: 1fr; }
+  .needs { grid-template-columns: 1fr; }
+  .needs li:nth-child(odd), .needs li:nth-child(even) { padding: 1.2rem 0; border-right: 0; }
+  .split { grid-template-columns: 1fr; }
+  .stage { min-height: 0; }
+  .data thead { display: none; }
+  .data tr { display: grid; grid-template-columns: 1fr auto; gap: .2rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .data td { border: 0; padding: 0; width: auto !important; }
+  .data td:last-child { grid-column: 1 / -1; color: var(--ink-2); }
+  .log { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body data-env="web">
+
+<header class="wrap top">
+  <a class="brand" href="#top"><img src="assets/icon.png" alt="">Jutge Web</a>
+  <div class="lang" role="group" aria-label="Idioma / Language">
+    <button type="button" data-lang="es" aria-pressed="true">ES</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="wrap hero">
+    <div>
+      <h1 data-i18n="hero.title">Jutge.org, en el navegador.<span>Una extensión para vscode.dev y github.dev</span></h1>
+      <p class="lede" data-i18n="hero.lede">La extensión oficial de Jutge solo funciona en VS Code de escritorio. Esta versión no oficial hace que todo funcione en VS Code para la Web: iniciar sesión, leer enunciados, probar juegos de prueba y enviar soluciones, desde cualquier navegador: tablets, Chromebooks u ordenadores compartidos.</p>
+      <div class="actions">
+        <a class="btn primary" href="https://marketplace.visualstudio.com/items?itemName=detorotodorov-alexander.jutge-vscode-web">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          <span data-i18n="cta.install">Instalar desde el Marketplace</span>
+        </a>
+        <a class="btn ghost" href="https://github.com/detorotodorov-alexander/jutge-vscode-online">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+          <span data-i18n="cta.repo">Ver el código en GitHub</span>
+        </a>
+      </div>
+      <p class="small" data-i18n="hero.note">Proyecto no oficial: no está afiliado ni respaldado por Jutge.org ni por la UPC.</p>
+    </div>
+
+    <figure class="mock" aria-label="vscode.dev, vista de extensiones">
+      <div class="mock-bar"><i></i><i></i><i></i><span>vscode.dev — Extensions</span></div>
+      <div class="mock-search">jutge</div>
+      <div class="ext dim">
+        <div class="ico placeholder" aria-hidden="true"></div>
+        <div>
+          <b>Jutge.org</b>
+          <small>jutge-org</small>
+          <span class="note"><svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm-.75 3.5h1.5v5h-1.5v-5Zm0 6h1.5V12h-1.5v-1.5Z"/></svg><span data-i18n="mock.unavailable">No disponible en VS Code para la Web</span></span>
+        </div>
+        <span class="pill off">Install</span>
+      </div>
+      <div class="ext">
+        <img class="ico" src="assets/icon.png" alt="">
+        <div>
+          <b>Jutge Web — unofficial plugin for Jutge.org</b>
+          <small>detorotodorov-alexander</small>
+        </div>
+        <span class="pill on">Install</span>
+      </div>
+    </figure>
+  </div>
+
+  <hr class="rule">
+
+  <!-- WHY IT DOESN'T WORK -->
+  <section class="wrap" id="why" aria-labelledby="why-title">
+    <div class="section-head">
+      <h2 id="why-title" data-i18n="why.title">Por qué la extensión oficial no funciona en la web</h2>
+      <p data-i18n="why.lede">En vscode.dev, las extensiones no se ejecutan en tu ordenador: se ejecutan dentro del navegador, en un entorno aislado. La extensión oficial necesita cuatro cosas que ahí no existen. Cambia de entorno para verlo.</p>
+    </div>
+
+    <div class="switch" role="group" aria-label="Entorno">
+      <button type="button" data-env-btn="desktop" aria-pressed="false" data-i18n="why.desktop">VS Code de escritorio</button>
+      <button type="button" data-env-btn="web" aria-pressed="true" data-i18n="why.web">vscode.dev (navegador)</button>
+    </div>
+
+    <ul class="needs">
+      <li>
+        <span class="mark" aria-hidden="true"></span>
+        <h3 data-i18n="need1.t">Leer y escribir tus archivos</h3>
+        <p><span class="ok" data-i18n="need1.ok">Usa <code>fs</code>, el sistema de archivos de Node.js, para tu código y los juegos de prueba.</span><span class="why" data-i18n="need1.no">No hay Node.js: <code>fs</code> no existe, y tus archivos pueden estar en un repo de GitHub, no en un disco.</span></p>
+      </li>
+      <li>
+        <span class="mark" aria-hidden="true"></span>
+        <h3 data-i18n="need2.t">Ejecutar compiladores</h3>
+        <p><span class="ok" data-i18n="need2.ok">Lanza <code>g++</code>, <code>python</code> o <code>ghc</code> instalados en tu máquina con <code>child_process</code>.</span><span class="why" data-i18n="need2.no">Un navegador no puede lanzar programas instalados en el sistema.</span></p>
+      </li>
+      <li>
+        <span class="mark" aria-hidden="true"></span>
+        <h3 data-i18n="need3.t">Piezas internas de Node.js</h3>
+        <p><span class="ok" data-i18n="need3.ok">Usa <code>os</code>, <code>path</code> y <code>Buffer</code> para rutas, carpetas temporales y datos binarios.</span><span class="why" data-i18n="need3.no">Tampoco existen en el navegador: el código ni siquiera llega a cargarse.</span></p>
+      </li>
+      <li>
+        <span class="mark" aria-hidden="true"></span>
+        <h3 data-i18n="need4.t">Otras dos extensiones</h3>
+        <p><span class="ok" data-i18n="need4.ok">Depende de la extensión de Python de Microsoft y de un visor de PDF.</span><span class="why" data-i18n="need4.no">Ninguna de las dos funciona en la web, así que VS Code bloquea la instalación.</span></p>
+      </li>
+    </ul>
+    <p class="verdict"><span class="d" data-i18n="why.vd">En escritorio, todo en orden.</span><span class="w" data-i18n="why.vw">En el navegador, el Marketplace la marca como no disponible y no se puede instalar.</span></p>
+  </section>
+
+  <hr class="rule">
+
+  <!-- WHAT CHANGED -->
+  <section class="wrap" id="how" aria-labelledby="how-title">
+    <div class="section-head">
+      <h2 id="how-title" data-i18n="how.title">Qué he cambiado</h2>
+      <p data-i18n="how.lede">La lógica de la extensión (cursos, enunciados, envíos, veredictos) es la misma. Lo que depende del entorno queda detrás de una capa de plataforma con dos implementaciones, y VS Code carga la que corresponde.</p>
+    </div>
+    <div class="arch">
+      <div class="layer">
+        <h3 data-i18n="how.shared">Código compartido</h3>
+        <p data-i18n="how.sharedp">Vistas, cliente de la API de Jutge, juegos de prueba y envíos. Los archivos se leen y escriben con <code>vscode.workspace.fs</code>, que funciona igual con una carpeta local o con un repo de GitHub.</p>
+      </div>
+      <div class="joint" aria-hidden="true"></div>
+      <div class="layer">
+        <h3 data-i18n="how.platform">Capa de plataforma</h3>
+        <p data-i18n="how.platformp">Un único punto que decide cómo se ejecuta el código y dónde se guardan las cosas.</p>
+      </div>
+      <div class="joint" aria-hidden="true"></div>
+      <div class="split">
+        <div class="layer">
+          <h3><span data-i18n="how.desk">Escritorio</span><span class="tag">Node.js</span></h3>
+          <ul>
+            <li data-i18n="how.d1">Igual que la extensión oficial</li>
+            <li data-i18n="how.d2">Compiladores locales: g++, Python, GHC</li>
+          </ul>
+        </div>
+        <div class="layer web">
+          <h3><span data-i18n="how.webt">Navegador</span><span class="tag" data-i18n="how.new">nuevo</span></h3>
+          <ul>
+            <li data-i18n="how.w1">Python con Pyodide (WebAssembly) en un Web Worker</li>
+            <li data-i18n="how.w2">C++ y Haskell con la API de Compiler Explorer</li>
+            <li data-i18n="how.w3">Errores en el panel de salida y subrayados en el código</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULATOR -->
+  <section class="sim" id="data" aria-labelledby="sim-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="sim-title" data-i18n="sim.title">Sigue el viaje de tu código</h2>
+        <p data-i18n="sim.lede">Elige una acción y mira qué sale de tu dispositivo, hacia dónde y qué se envía exactamente.</p>
+      </div>
+      <div class="sim-controls" role="group" aria-label="Acciones">
+        <button type="button" data-act="py" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span data-i18n="sim.py">Probar en Python</span></button>
+        <button type="button" data-act="cpp" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span data-i18n="sim.cpp">Probar en C++ o Haskell</span></button>
+        <button type="button" data-act="submit" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span data-i18n="sim.submit">Enviar a Jutge</span></button>
+        <button type="button" data-act="login" aria-pressed="false"><span class="dot" aria-hidden="true"></span><span data-i18n="sim.login">Iniciar sesión</span></button>
+      </div>
+      <div class="sim-grid">
+        <div class="stage">
+          <svg id="stage-svg" viewBox="0 0 640 380" role="img" aria-labelledby="stage-desc"></svg>
+        </div>
+        <div class="log" aria-live="polite">
+          <div class="log-title"><span data-i18n="sim.log">Registro de red</span><span id="log-count"></span></div>
+          <ol id="log"><li class="in quiet" data-i18n="sim.idle">Elige una acción para empezar.</li></ol>
+        </div>
+      </div>
+      <p class="sim-foot" data-i18n="sim.foot">No hay telemetría: la extensión solo habla con Jutge.org, con Compiler Explorer (para C++ y Haskell) y con jsDelivr, de donde se descarga Pyodide.</p>
+    </div>
+  </section>
+
+  <!-- DATA TABLE -->
+  <section class="wrap" aria-labelledby="table-title">
+    <div class="section-head">
+      <h2 id="table-title" data-i18n="table.title">Dónde va cada dato</h2>
+    </div>
+    <table class="data">
+      <thead><tr><th data-i18n="table.what">Qué</th><th data-i18n="table.where">Destino</th><th data-i18n="table.details">Detalles</th></tr></thead>
+      <tbody>
+        <tr><td data-i18n="t1.a">Email y contraseña</td><td><span class="dest jutge">api.jutge.org</span></td><td data-i18n="t1.c">Por HTTPS, como en la extensión oficial. Se guardan en el almacén seguro de VS Code, que en vscode.dev vive en tu navegador.</td></tr>
+        <tr><td data-i18n="t2.a">Enunciados y juegos de prueba</td><td><span class="dest jutge">api.jutge.org</span></td><td data-i18n="t2.c">Se descargan con tu sesión.</td></tr>
+        <tr><td data-i18n="t3.a">Tu código al enviarlo</td><td><span class="dest jutge">api.jutge.org</span></td><td data-i18n="t3.c">Exactamente igual que en la extensión oficial.</td></tr>
+        <tr><td data-i18n="t4.a">Tu código Python al probarlo</td><td><span class="dest local" data-i18n="t4.b">Tu navegador</span></td><td data-i18n="t4.c">No sale de tu dispositivo. Solo se descarga Pyodide desde cdn.jsdelivr.net.</td></tr>
+        <tr><td data-i18n="t5.a">Tu código C++ o Haskell al probarlo</td><td><span class="dest ce">godbolt.org</span></td><td data-i18n="t5.c">Se envían el código y la entrada del juego de prueba, pidiendo que no se guarden. El servidor se puede cambiar en los ajustes.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr class="rule">
+
+  <!-- STORY -->
+  <section class="wrap" aria-labelledby="story-title">
+    <div class="story">
+      <blockquote id="story-title" data-i18n="story.q">El Jutge de la UPC estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
+      <div class="body">
+        <p data-i18n="story.p1">Jutge.org es el juez en línea con el que se aprende a programar en la UPC, y su extensión oficial para VS Code es muy buena. Pero se queda en el escritorio, justo donde un editor en el navegador sería más útil: en tablets, en Chromebooks o en ordenadores donde no se puede instalar nada.</p>
+        <p data-i18n="story.p2">Para que cualquiera pueda usar Jutge desde un navegador, adapté la extensión a vscode.dev: separé lo que depende del sistema, llevé Python al navegador con WebAssembly y conecté C++ y Haskell con Compiler Explorer. La desarrollé con la ayuda de Claude Code y está publicada en el Marketplace.</p>
+        <p data-i18n="story.p3">El código es abierto, con la misma licencia que el original (Apache 2.0). Si a los autores de Jutge les sirve, encantado de que lo integren en la extensión oficial.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><hr class="rule"></div>
+  <div class="wrap cta">
+    <h2 data-i18n="cta.title">Pruébala en vscode.dev</h2>
+    <div class="actions" style="margin-top:0">
+      <a class="btn primary" href="https://marketplace.visualstudio.com/items?itemName=detorotodorov-alexander.jutge-vscode-web" data-i18n="cta.install2">Instalar desde el Marketplace</a>
+      <a class="btn ghost" href="https://github.com/detorotodorov-alexander/jutge-vscode-online" data-i18n="cta.repo2">Repositorio en GitHub</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a class="inverso" href="https://inverso.bio/about" aria-label="IИVEЯSO — inverso.bio">I<span class="g">И</span>VE<span class="g">Я</span>SO</a>
+      <p class="byline"><span data-i18n="foot.by">Hecho por</span> <a href="https://inverso.bio/about">Alexander de Toro Todorov</a></p>
+    </div>
+    <div class="legal">
+      <p data-i18n="foot.l1">Jutge Web es un proyecto no oficial y no está afiliado, patrocinado ni respaldado por Jutge.org ni por la Universitat Politècnica de Catalunya (UPC). “Jutge.org” se usa solo para describir la compatibilidad con ese servicio.</p>
+      <p><span data-i18n="foot.l2">Basado en la</span> <a href="https://github.com/jutge-org/jutge-vscode" data-i18n="foot.l3">extensión oficial de Jutge.org</a> <span data-i18n="foot.l4">(© UPC, Apache 2.0). Desarrollado con la ayuda de Claude Code.</span></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const I18N = {
+    en: {
+      "hero.title": "Jutge.org, in the browser.<span>An extension for vscode.dev and github.dev</span>",
+      "hero.lede": "The official Jutge extension only runs on desktop VS Code. This unofficial version makes everything work in VS Code for the Web: sign in, read statements, run testcases and submit solutions, from any browser: tablets, Chromebooks or shared computers.",
+      "cta.install": "Install from the Marketplace",
+      "cta.repo": "View the code on GitHub",
+      "hero.note": "Unofficial project: not affiliated with or endorsed by Jutge.org or UPC.",
+      "mock.unavailable": "Not available in VS Code for the Web",
+      "why.title": "Why the official extension doesn’t work on the web",
+      "why.lede": "In vscode.dev, extensions don’t run on your computer: they run inside the browser, in an isolated sandbox. The official extension needs four things that don’t exist there. Switch environments to see it.",
+      "why.desktop": "Desktop VS Code",
+      "why.web": "vscode.dev (browser)",
+      "need1.t": "Read and write your files",
+      "need1.ok": "It uses <code>fs</code>, Node.js’s file system, for your code and testcases.",
+      "need1.no": "There is no Node.js: <code>fs</code> doesn’t exist, and your files may live in a GitHub repo, not on a disk.",
+      "need2.t": "Run compilers",
+      "need2.ok": "It launches <code>g++</code>, <code>python</code> or <code>ghc</code> installed on your machine with <code>child_process</code>.",
+      "need2.no": "A browser can’t launch programs installed on the system.",
+      "need3.t": "Node.js internals",
+      "need3.ok": "It uses <code>os</code>, <code>path</code> and <code>Buffer</code> for paths, temporary folders and binary data.",
+      "need3.no": "These don’t exist in the browser either: the code doesn’t even load.",
+      "need4.t": "Two other extensions",
+      "need4.ok": "It depends on Microsoft’s Python extension and on a PDF viewer.",
+      "need4.no": "Neither works on the web, so VS Code blocks the installation.",
+      "why.vd": "On desktop, all good.",
+      "why.vw": "In the browser, the Marketplace marks it as unavailable and it can’t be installed.",
+      "how.title": "What I changed",
+      "how.lede": "The extension’s logic (courses, statements, submissions, verdicts) is the same. Everything that depends on the environment sits behind a platform layer with two implementations, and VS Code loads the right one.",
+      "how.shared": "Shared code",
+      "how.sharedp": "Views, the Jutge API client, testcases and submissions. Files are read and written with <code>vscode.workspace.fs</code>, which works the same for a local folder or a GitHub repo.",
+      "how.platform": "Platform layer",
+      "how.platformp": "A single place that decides how code runs and where things are stored.",
+      "how.desk": "Desktop",
+      "how.d1": "Same as the official extension",
+      "how.d2": "Local compilers: g++, Python, GHC",
+      "how.webt": "Browser",
+      "how.new": "new",
+      "how.w1": "Python with Pyodide (WebAssembly) in a Web Worker",
+      "how.w2": "C++ and Haskell through the Compiler Explorer API",
+      "how.w3": "Errors in the output panel and underlined in your code",
+      "sim.title": "Follow your code’s journey",
+      "sim.lede": "Pick an action and see what leaves your device, where it goes and exactly what is sent.",
+      "sim.py": "Test in Python",
+      "sim.cpp": "Test in C++ or Haskell",
+      "sim.submit": "Submit to Jutge",
+      "sim.login": "Sign in",
+      "sim.desc": "Diagram: your browser holds the editor and the Python worker; Jutge.org and Compiler Explorer are outside.",
+      "sim.device": "Your device · browser",
+      "sim.editor": "Editor + Jutge Web",
+      "sim.worker": "Python worker",
+      "sim.jutge": "Account, statements, submissions",
+      "sim.log": "Network log",
+      "sim.idle": "Pick an action to start.",
+      "sim.foot": "No telemetry: the extension only talks to Jutge.org, to Compiler Explorer (for C++ and Haskell) and to jsDelivr, where Pyodide is downloaded from.",
+      "table.title": "Where each piece of data goes",
+      "table.what": "What", "table.where": "Destination", "table.details": "Details",
+      "t1.a": "Email and password",
+      "t1.c": "Over HTTPS, as in the official extension. They are kept in VS Code’s secret storage, which in vscode.dev lives in your browser.",
+      "t2.a": "Statements and testcases", "t2.c": "Downloaded with your session.",
+      "t3.a": "Your code when you submit", "t3.c": "Exactly as in the official extension.",
+      "t4.a": "Your Python code when you test it", "t4.b": "Your browser",
+      "t4.c": "It never leaves your device. Only Pyodide is downloaded, from cdn.jsdelivr.net.",
+      "t5.a": "Your C++ or Haskell code when you test it",
+      "t5.c": "The code and the testcase input are sent, asking for them not to be stored. The server can be changed in the settings.",
+      "story.q": "UPC’s Jutge was only half there: it stopped at the desktop. I decided to finish it.",
+      "story.p1": "Jutge.org is the online judge used to learn programming at UPC, and its official VS Code extension is very good. But it stops at the desktop, right where a browser editor would be most useful: on tablets, on Chromebooks, or on computers where nothing can be installed.",
+      "story.p2": "So that anyone can use Jutge from a browser, I adapted the extension to vscode.dev: I separated everything that depends on the system, brought Python to the browser with WebAssembly and connected C++ and Haskell through Compiler Explorer. I built it with the help of Claude Code, and it is published on the Marketplace.",
+      "story.p3": "The code is open source, under the same license as the original (Apache 2.0). If it’s useful to Jutge’s authors, I’d be glad to see it merged into the official extension.",
+      "cta.title": "Try it in vscode.dev",
+      "cta.install2": "Install from the Marketplace",
+      "cta.repo2": "GitHub repository",
+      "foot.by": "Made by",
+      "foot.l1": "Jutge Web is an unofficial project and is not affiliated with, sponsored or endorsed by Jutge.org or the Universitat Politècnica de Catalunya (UPC). “Jutge.org” is used only to describe compatibility with that service.",
+      "foot.l2": "Based on the",
+      "foot.l3": "official Jutge.org extension",
+      "foot.l4": "(© UPC, Apache 2.0). Built with the help of Claude Code.",
+      "log.count": n => `${n} ${n === 1 ? "request" : "requests"}`,
+    },
+  };
+
+  // Simulation scripts: steps along wires + log lines (per language)
+  const SCRIPTS = {
+    py: {
+      es: [
+        ["none", "Sin peticiones de red: el código se ejecuta en tu navegador."],
+        ["get", "GET cdn.jsdelivr.net/pyodide/…", "solo la primera vez · descarga Pyodide (~10 MB), no envía nada tuyo"],
+        ["quiet", "Worker: main.py + entrada del juego de prueba → salida"],
+        ["quiet", "Salida comparada con la esperada · Passed ✓"],
+      ],
+      en: [
+        ["none", "No network requests: the code runs in your browser."],
+        ["get", "GET cdn.jsdelivr.net/pyodide/…", "first time only · downloads Pyodide (~10 MB), sends nothing of yours"],
+        ["quiet", "Worker: main.py + testcase input → output"],
+        ["quiet", "Output compared with the expected one · Passed ✓"],
+      ],
+      path: ["w-py"], nodes: ["n-editor", "n-pyodide", "n-device"], requests: 0,
+    },
+    cpp: {
+      es: [
+        ["post", "POST godbolt.org/api/compiler/g142/compile", "envía: código fuente + entrada del juego de prueba · allowStoreCodeDebug: false"],
+        ["quiet", "← compilación + ejecución: salida, errores y avisos"],
+        ["quiet", "Errores marcados en la línea correcta del editor"],
+      ],
+      en: [
+        ["post", "POST godbolt.org/api/compiler/g142/compile", "sends: source code + testcase input · allowStoreCodeDebug: false"],
+        ["quiet", "← compile + run: output, errors and warnings"],
+        ["quiet", "Errors underlined on the right line in the editor"],
+      ],
+      path: ["w-ce"], nodes: ["n-editor", "n-ce"], requests: 1,
+    },
+    submit: {
+      es: [
+        ["post", "POST api.jutge.org/api · student.submissions.submit", "envía: tu código + id del problema + compilador · con tu sesión"],
+        ["post", "POST api.jutge.org/api · student.submissions.get", "consulta el veredicto cada 2 s"],
+        ["quiet", "← Veredicto: AC ✓"],
+      ],
+      en: [
+        ["post", "POST api.jutge.org/api · student.submissions.submit", "sends: your code + problem id + compiler · with your session"],
+        ["post", "POST api.jutge.org/api · student.submissions.get", "polls the verdict every 2 s"],
+        ["quiet", "← Verdict: AC ✓"],
+      ],
+      path: ["w-jutge"], nodes: ["n-editor", "n-jutge"], requests: 2,
+    },
+    login: {
+      es: [
+        ["post", "POST api.jutge.org/api · auth.login", "envía: email + contraseña, por HTTPS"],
+        ["quiet", "← token de sesión"],
+        ["quiet", "Guardado en el almacén seguro de VS Code, en tu navegador"],
+      ],
+      en: [
+        ["post", "POST api.jutge.org/api · auth.login", "sends: email + password, over HTTPS"],
+        ["quiet", "← session token"],
+        ["quiet", "Stored in VS Code’s secret storage, in your browser"],
+      ],
+      path: ["w-jutge"], nodes: ["n-editor", "n-jutge"], requests: 1,
+    },
+  };
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const original = {};
+  let lang = "es";
+  // Stage layouts: wide (side by side) and narrow (stacked, for phones)
+  const STAGE = {
+    wide: { box: "0 0 640 380", html: `
+            <desc id="stage-desc" data-i18n="sim.desc">Diagrama: tu navegador contiene el editor y el worker de Python; fuera están Jutge.org y Compiler Explorer.</desc>
+            <g class="node device" id="n-device"><rect x="16" y="16" width="300" height="348" rx="18"/><text x="36" y="46" data-i18n="sim.device">Tu dispositivo · navegador</text></g>
+            <g class="node" id="n-editor"><rect x="40" y="72" width="252" height="92" rx="12"/><text x="60" y="108">vscode.dev</text><text class="sub" x="60" y="132" data-i18n="sim.editor">Editor + Jutge Web</text></g>
+            <g class="node" id="n-pyodide"><rect x="40" y="236" width="252" height="100" rx="12"/><text x="60" y="272" data-i18n="sim.worker">Worker de Python</text><text class="sub" x="60" y="296">Pyodide · WebAssembly</text></g>
+            <g class="node" id="n-jutge"><rect x="372" y="44" width="250" height="100" rx="12"/><text x="392" y="82">api.jutge.org</text><text class="sub" x="392" y="106" data-i18n="sim.jutge">Cuenta, enunciados, envíos</text></g>
+            <g class="node" id="n-ce"><rect x="372" y="236" width="250" height="100" rx="12"/><text x="392" y="274">godbolt.org</text><text class="sub" x="392" y="298">Compiler Explorer</text></g>
+            <path class="wire" id="w-jutge" d="M292 118 C 332 118, 336 94, 372 94"/>
+            <path class="wire" id="w-ce" d="M292 140 C 352 150, 320 286, 372 286"/>
+            <path class="wire" id="w-py" d="M166 164 L 166 236"/>
+            <circle class="packet" id="packet" r="7" cx="-20" cy="-20"/>
+          ` },
+    narrow: { box: "0 0 340 436", html: `
+            <desc id="stage-desc" data-i18n="sim.desc">Diagrama: tu navegador contiene el editor y el worker de Python; fuera están Jutge.org y Compiler Explorer.</desc>
+            <g class="node" id="n-jutge"><rect x="8" y="8" width="156" height="88" rx="12"/><text x="22" y="44">api.jutge.org</text><text class="sub" x="22" y="68">Jutge.org</text></g>
+            <g class="node" id="n-ce"><rect x="176" y="8" width="156" height="88" rx="12"/><text x="190" y="44">godbolt.org</text><text class="sub" x="190" y="68">Compiler Explorer</text></g>
+            <g class="node device" id="n-device"><rect x="8" y="128" width="324" height="300" rx="18"/><text x="24" y="156" data-i18n="sim.device">Tu dispositivo · navegador</text></g>
+            <g class="node" id="n-editor"><rect x="24" y="172" width="292" height="80" rx="12"/><text x="40" y="206">vscode.dev</text><text class="sub" x="40" y="230" data-i18n="sim.editor">Editor + Jutge Web</text></g>
+            <g class="node" id="n-pyodide"><rect x="24" y="318" width="292" height="90" rx="12"/><text x="40" y="354" data-i18n="sim.worker">Worker de Python</text><text class="sub" x="40" y="378">Pyodide · WebAssembly</text></g>
+            <path class="wire" id="w-jutge" d="M100 172 C 100 130, 86 132, 86 96"/>
+            <path class="wire" id="w-ce" d="M240 172 C 240 130, 254 132, 254 96"/>
+            <path class="wire" id="w-py" d="M170 252 L 170 318"/>
+            <circle class="packet" id="packet" r="7" cx="-20" cy="-20"/>
+` },
+  };
+  const stageSvg = document.getElementById("stage-svg");
+  const narrowMq = window.matchMedia("(max-width: 640px)");
+  function renderStage() {
+    const L = narrowMq.matches ? STAGE.narrow : STAGE.wide;
+    stageSvg.setAttribute("viewBox", L.box);
+    stageSvg.innerHTML = L.html;
+    stageSvg.querySelectorAll("[data-i18n]").forEach(el => {
+      const k = el.dataset.i18n;
+      if (!(k in original)) original[k] = el.innerHTML;
+      if (lang === "en" && I18N.en[k]) el.innerHTML = I18N.en[k];
+    });
+  }
+
+  renderStage();
+  document.querySelectorAll("[data-i18n]").forEach(el => { if (!(el.dataset.i18n in original)) original[el.dataset.i18n] = el.innerHTML; });
+
+  function setLang(next) {
+    lang = next;
+    document.documentElement.lang = next;
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const k = el.dataset.i18n;
+      el.innerHTML = next === "es" ? original[k] : (I18N.en[k] ?? original[k]);
+    });
+    document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
+    try { localStorage.setItem("jw-lang", next); } catch (e) {}
+    if (current) run(current, true);
+  }
+
+  document.querySelectorAll("[data-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.lang)));
+
+  // Environment switch
+  document.querySelectorAll("[data-env-btn]").forEach(b => b.addEventListener("click", () => {
+    document.body.dataset.env = b.dataset.envBtn;
+    document.querySelectorAll("[data-env-btn]").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+
+  // Simulator
+  const pk = () => document.getElementById("packet");
+  const log = document.getElementById("log");
+  const count = document.getElementById("log-count");
+  let current = null, token = 0;
+
+  function animateAlong(id, back, t) {
+    return new Promise(res => {
+      const path = document.getElementById(id);
+      const len = path.getTotalLength();
+      if (reduce) { const p = path.getPointAtLength(back ? 0 : len); pk().setAttribute("cx", p.x); pk().setAttribute("cy", p.y); return res(); }
+      const dur = 700, start = performance.now();
+      const step = now => {
+        if (t !== token) return res();
+        const k = Math.min(1, (now - start) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+        const p = path.getPointAtLength((back ? 1 - e : e) * len);
+        pk().setAttribute("cx", p.x); pk().setAttribute("cy", p.y);
+        k < 1 ? requestAnimationFrame(step) : res();
+      };
+      requestAnimationFrame(step);
+    });
+  }
+
+  const wait = (ms, t) => new Promise(r => setTimeout(r, reduce ? 0 : ms)).then(() => t === token);
+
+  function line([kind, main, sub]) {
+    const li = document.createElement("li");
+    const cls = { get: "verb", post: "verb", none: "none", quiet: "quiet" }[kind];
+    if (kind === "get" || kind === "post") {
+      const [verb, ...rest] = main.split(" ");
+      li.innerHTML = `<span class="${cls}">${verb}</span> <span class="host">${rest.join(" ")}</span>${sub ? `<br><span class="quiet">${sub}</span>` : ""}`;
+    } else {
+      li.innerHTML = `<span class="${cls}">${main}</span>`;
+    }
+    log.appendChild(li);
+    requestAnimationFrame(() => li.classList.add("in"));
+  }
+
+  async function run(key, instant) {
+    const t = ++token; current = key;
+    const s = SCRIPTS[key];
+    document.querySelectorAll("[data-act]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.act === key)));
+    document.querySelectorAll(".node").forEach(n => n.classList.remove("active"));
+    document.querySelectorAll(".wire").forEach(w => w.classList.remove("lit"));
+    log.innerHTML = "";
+    const n = s.requests;
+    count.textContent = lang === "en" ? I18N.en["log.count"](n) : `${n} ${n === 1 ? "petición" : "peticiones"}`;
+    s.nodes.forEach(id => document.getElementById(id).classList.add("active"));
+    const lines = s[lang];
+    if (instant) { lines.forEach(line); s.path.forEach(id => document.getElementById(id).classList.add("lit")); return; }
+    for (let i = 0; i < lines.length; i++) {
+      line(lines[i]);
+      if (i === 0) {
+        for (const id of s.path) {
+          document.getElementById(id).classList.add("lit");
+          await animateAlong(id, false, t);
+          if (!(await wait(250, t))) return;
+          await animateAlong(id, true, t);
+        }
+      } else if (!(await wait(550, t))) return;
+    }
+    if (t === token) { pk().setAttribute("cx", -20); pk().setAttribute("cy", -20); }
+  }
+
+  document.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", () => run(b.dataset.act)));
+  narrowMq.addEventListener("change", () => { token++; renderStage(); if (current) run(current, true); });
+
+  // Initial language: saved choice, else the browser's
+  let saved = null;
+  try { saved = localStorage.getItem("jw-lang"); } catch (e) {}
+  const initial = saved || ((navigator.language || "es").toLowerCase().startsWith("es") || navigator.language.toLowerCase().startsWith("ca") ? "es" : "en");
+  if (initial !== "es") setLang(initial);
+})();
+</script>
+</body>
+</html>

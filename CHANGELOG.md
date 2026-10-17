@@ -2,6 +2,11 @@
 
 All notable changes to the "jutge-vscode" extension will be documented in this file.
 
+## 0.1.14 (web fork)
+
+- Marketplace page wording made generic for any browser user.
+- Project website in `docs/` (GitHub Pages).
+
 ## 0.1.13 (web fork)
 
 - New icon: angular wordmark with an abstract nod to the judge's wig of the original logo.
