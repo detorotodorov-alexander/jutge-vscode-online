@@ -198,15 +198,19 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 .foot { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2.5rem; align-items: end; }
 .inverso { font-family: "Unbounded", sans-serif; font-weight: 800; font-size: clamp(2.6rem, 7vw, 6rem); letter-spacing: -0.03em; text-decoration: none; color: #ECE7E4; line-height: 1; display: inline-flex; perspective: 900px; padding: .25em 0 .3em; }
 .inverso .g { color: #7D6B75; }
+.inverso { touch-action: pan-y; }
 /* 3D letters (built by the script below; plain text without JS) */
-.inverso .slot { position: relative; display: inline-block; margin: 0 .045em; --face: #ECE7E4; --side: #6E6460; --side-dark: #2E2725; }
+.inverso .slot { position: relative; display: inline-block; margin: 0 .045em; --plain: #ECE7E4; --face: #ECE7E4; --side: #6E6460; --side-dark: #2E2725; }
 .inverso .slot.g { --face: #8C7884; --side: #4E3E47; --side-dark: #251C21; }
 .inverso .lt { display: inline-block; transform-style: preserve-3d; transform: rotateX(12deg) rotateY(-14deg); will-change: transform; }
 .inverso .spin { display: inline-block; position: relative; transform-style: preserve-3d; }
-.inverso .face { position: relative; display: block; color: var(--face); }
+.inverso .face { position: relative; display: block; color: var(--face); backface-visibility: hidden; }
+/* back side of И / Я: seen from behind it reads N / R, so it takes the plain letter color */
+.inverso .back { position: absolute; inset: 0; color: var(--plain); backface-visibility: hidden; transform: translateZ(calc(-15 * .011em)) rotateY(180deg); }
+.inverso .slot.g .inv-l.rear { color: color-mix(in srgb, #6E6460 calc(100% - var(--d) * 6%), #2E2725); }
 .inverso .inv-l { position: absolute; inset: 0; color: color-mix(in srgb, var(--side) calc(100% - var(--d) * 6%), var(--side-dark)); transform: translateZ(calc(var(--d) * -.011em)); }
 .inverso .shadow { position: absolute; left: 8%; right: 8%; bottom: -.12em; height: .1em; border-radius: 50%; background: radial-gradient(closest-side, #000c, #0000); will-change: transform, opacity; }
-.inverso:hover .slot { --face: #fff; }
+.inverso:hover .slot { --face: #fff; --plain: #fff; }
 .inverso:hover .slot.g { --face: #A08E98; }
 @media (prefers-reduced-motion: reduce) {
   .inverso .lt { transform: rotateX(12deg) rotateY(-14deg) !important; }
@@ -217,6 +221,32 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 .legal p { margin: 0 0 .7em; }
 .legal a { color: #C9C1BC; }
 
+
+
+/* ---------- minimap (page overview on the left) ---------- */
+.mm { position: fixed; z-index: 50; left: 10px; top: 50%; transform: translateY(-50%); }
+.mm-track { position: relative; width: 16px; padding: 6px 5px; border-radius: 10px; background: #EEF1F4b8; box-shadow: 0 0 0 1px #0F121812; overflow: hidden; transition: width .28s cubic-bezier(.2,.8,.2,1), background .2s ease, box-shadow .2s ease; }
+.mm ol { list-style: none; margin: 0; padding: 0; position: relative; }
+.mm li { position: relative; }
+.mm li a { display: flex; align-items: stretch; gap: .65rem; height: 100%; text-decoration: none; color: var(--ink-2); border-radius: 4px; }
+.mm .bar { flex: none; width: 6px; margin-block: 1.5px; border-radius: 3px; background: var(--ink-2); opacity: .28; transition: opacity .2s ease; }
+.mm .lbl { align-self: center; white-space: nowrap; font: 500 .8rem/1.1 var(--body); opacity: 0; transform: translateX(-6px); transition: opacity .18s ease, transform .18s ease; }
+.mm li.on .bar { opacity: .8; }
+.mm li.on .lbl { color: var(--ink); font-weight: 600; }
+.mm-view { position: absolute; left: 3px; right: 3px; top: 0; height: 0; border: 1.5px solid var(--green); border-radius: 6px; background: #157A4414; pointer-events: none; }
+.mm.open .mm-track { width: 218px; background: #EEF1F4f2; box-shadow: 0 0 0 1px #0F121814, 0 18px 40px -18px #0F121866; backdrop-filter: blur(6px); }
+.mm.open .lbl { opacity: 1; transform: none; }
+.mm a:hover .lbl, .mm a:focus-visible .lbl { color: var(--ink); }
+.mm a:focus-visible { outline-offset: 0; }
+@media (max-width: 700px) {
+  .mm { left: 3px; }
+  .mm-track { width: 11px; padding: 4px 3px; }
+  .mm .bar { width: 5px; }
+  .mm .lbl { font-size: .78rem; }
+  .mm.open .mm-track { width: min(64vw, 236px); }
+  .mm-view { left: 1px; right: 1px; }
+}
+@media (prefers-reduced-motion: reduce) { .mm-track, .mm .lbl { transition: none; } }
 
 /* ---------- ultrawide (21:9) ---------- */
 @media (min-width: 1900px) {
@@ -258,6 +288,23 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 </head>
 <body data-env="web">
 
+<nav class="mm" id="mm" aria-label="Contenido de la página" data-i18n-aria="mm.aria">
+  <div class="mm-track">
+    <ol>
+      <li data-target="intro"><a href="#intro"><span class="bar"></span><span class="lbl" data-i18n="mm.intro">Inicio</span></a></li>
+      <li data-target="why"><a href="#why"><span class="bar"></span><span class="lbl" data-i18n="mm.why">Por qué no funciona</span></a></li>
+      <li data-target="how"><a href="#how"><span class="bar"></span><span class="lbl" data-i18n="mm.how">Qué ha cambiado</span></a></li>
+      <li data-target="data"><a href="#data"><span class="bar"></span><span class="lbl" data-i18n="mm.data">El viaje del código</span></a></li>
+      <li data-target="table"><a href="#table"><span class="bar"></span><span class="lbl" data-i18n="mm.table">Dónde van los datos</span></a></li>
+      <li data-target="licenses"><a href="#licenses"><span class="bar"></span><span class="lbl" data-i18n="mm.lic">Licencias</span></a></li>
+      <li data-target="story"><a href="#story"><span class="bar"></span><span class="lbl" data-i18n="mm.story">La historia</span></a></li>
+      <li data-target="try"><a href="#try"><span class="bar"></span><span class="lbl" data-i18n="mm.try">Pruébala</span></a></li>
+      <li data-target="author"><a href="#author"><span class="bar"></span><span class="lbl" data-i18n="mm.author">Autor</span></a></li>
+    </ol>
+    <div class="mm-view" aria-hidden="true"></div>
+  </div>
+</nav>
+
 <header class="wrap top">
   <a class="brand" href="#top"><img src="assets/icon.png" alt="">Jutge Web</a>
   <div class="lang" role="group" aria-label="Idioma / Language">
@@ -269,7 +316,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
 
 <main id="top">
   <!-- HERO -->
-  <div class="wrap hero">
+  <div class="wrap hero" id="intro">
     <div>
       <h1 data-i18n="hero.title">Jutge.org, en el navegador.<span>Una extensión para vscode.dev y github.dev</span></h1>
       <p class="lede" data-i18n="hero.lede">La extensión oficial de Jutge solo funciona en VS Code de escritorio. Esta versión no oficial hace que todo funcione en VS Code para la Web: iniciar sesión, leer enunciados, probar juegos de prueba y enviar soluciones, desde cualquier navegador: tablets, Chromebooks u ordenadores compartidos.</p>
@@ -414,7 +461,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   </section>
 
   <!-- DATA TABLE -->
-  <section class="wrap" aria-labelledby="table-title">
+  <section class="wrap" id="table" aria-labelledby="table-title">
     <div class="section-head">
       <h2 id="table-title" data-i18n="table.title">Dónde va cada dato</h2>
     </div>
@@ -462,7 +509,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   <hr class="rule">
 
   <!-- STORY -->
-  <section class="wrap" aria-labelledby="story-title">
+  <section class="wrap" id="story" aria-labelledby="story-title">
     <div class="story">
       <blockquote id="story-title" data-i18n="story.q">El Jutge de la <span class="upc"><svg class="dots" viewBox="0 0 30 30" aria-hidden="true"><circle cx="5" cy="5" r="3.7"/><circle cx="15" cy="5" r="3.7"/><circle cx="25" cy="5" r="3.7"/><circle cx="5" cy="15" r="3.7"/><circle cx="15" cy="15" r="3.7"/><circle cx="25" cy="15" r="3.7"/><circle cx="5" cy="25" r="3.7"/><circle cx="15" cy="25" r="3.7"/><circle cx="25" cy="25" r="3.7"/></svg>UPC</span> estaba a medias: solo llegaba al escritorio. Decidí terminarlo.</blockquote>
       <div class="body">
@@ -474,7 +521,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   </section>
 
   <div class="wrap"><hr class="rule"></div>
-  <div class="wrap cta">
+  <div class="wrap cta" id="try">
     <h2 data-i18n="cta.title">Pruébala en vscode.dev</h2>
     <div class="actions" style="margin-top:0">
       <a class="btn primary" href="https://marketplace.visualstudio.com/items?itemName=detorotodorov-alexander.jutge-vscode-web" data-i18n="cta.install2">Instalar desde el Marketplace</a>
@@ -483,7 +530,7 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
   </div>
 </main>
 
-<footer>
+<footer id="author">
   <div class="wrap foot">
     <div>
       <a class="inverso" href="https://inverso.bio/about" aria-label="IИVEЯSO — inverso.bio">I<span class="g">И</span>VE<span class="g">Я</span>SO</a>
@@ -576,6 +623,9 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "lic.tm.p": "La llicència del codi no cobreix les marques. “Jutge.org” i “<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>” només es mencionen per descriure la compatibilitat. No s’utilitza el logotip de Jutge.org ni el de la UPC: la icona de l’extensió i els nou cercles són dissenys propis.",
       "lic.3p.t": "Components de tercers",
       "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), inclòs per llegir l’entrada en Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), que es descarrega de jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, un servei extern amb les seves pròpies condicions. Les tipografies tenen llicència SIL Open Font License.",
+      "mm.intro": "Inici", "mm.why": "Per què no funciona", "mm.how": "Què ha canviat", "mm.data": "El viatge del codi",
+      "mm.table": "On van les dades", "mm.lic": "Llicències", "mm.story": "La història", "mm.try": "Prova-la", "mm.author": "Autor",
+      "mm.aria": "Contingut de la pàgina",
       "cta.title": "Prova-la a vscode.dev",
       "cta.install2": "Instal·lar des del Marketplace",
       "cta.repo2": "Repositori a GitHub",
@@ -663,6 +713,9 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       "lic.tm.p": "The code license doesn’t cover trademarks. “Jutge.org” and “<span class=\"upc\"><svg class=\"dots\" viewBox=\"0 0 30 30\" aria-hidden=\"true\"><circle cx=\"5\" cy=\"5\" r=\"3.7\"/><circle cx=\"15\" cy=\"5\" r=\"3.7\"/><circle cx=\"25\" cy=\"5\" r=\"3.7\"/><circle cx=\"5\" cy=\"15\" r=\"3.7\"/><circle cx=\"15\" cy=\"15\" r=\"3.7\"/><circle cx=\"25\" cy=\"15\" r=\"3.7\"/><circle cx=\"5\" cy=\"25\" r=\"3.7\"/><circle cx=\"15\" cy=\"25\" r=\"3.7\"/><circle cx=\"25\" cy=\"25\" r=\"3.7\"/></svg>UPC</span>” are mentioned only to describe compatibility. Neither the Jutge.org logo nor the UPC logo is used: the extension icon and the nine circles are original designs.",
       "lic.3p.t": "Third-party components",
       "lic.3p.p": "<a href=\"https://pypi.org/project/yogi/\">yogi</a> (© UPC, Apache 2.0), bundled to read input in Python. <a href=\"https://pyodide.org\">Pyodide</a> (MPL 2.0), downloaded from jsDelivr. <a href=\"https://godbolt.org\">Compiler Explorer</a>, an external service with its own terms. The typefaces are licensed under the SIL Open Font License.",
+      "mm.intro": "Start", "mm.why": "Why it doesn’t work", "mm.how": "What changed", "mm.data": "Your code’s journey",
+      "mm.table": "Where data goes", "mm.lic": "Licenses", "mm.story": "The story", "mm.try": "Try it", "mm.author": "Author",
+      "mm.aria": "Page contents",
       "cta.title": "Try it in vscode.dev",
       "cta.install2": "Install from the Marketplace",
       "cta.repo2": "GitHub repository",
@@ -808,6 +861,8 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       el.innerHTML = next === "es" ? original[k] : (I18N[next][k] ?? original[k]);
     });
     document.querySelectorAll("[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === next)));
+    const mmNav = document.getElementById("mm");
+    if (mmNav) mmNav.setAttribute("aria-label", next === "es" ? "Contenido de la página" : I18N[next]["mm.aria"]);
     try { localStorage.setItem("jw-lang", next); } catch (e) {}
     if (current) run(current, true);
   }
@@ -903,8 +958,10 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       slot.style.setProperty("--i", i);
       slot.setAttribute("aria-hidden", "true");
       let layers = "";
-      for (let d = DEPTH; d >= 1; d--) layers += `<span class="inv-l" style="--d:${d}">${ch}</span>`;
-      slot.innerHTML = `<span class="lt"><span class="spin">${layers}<span class="face">${ch}</span></span></span><span class="shadow"></span>`;
+      for (let d = DEPTH; d >= 1; d--) layers += `<span class="inv-l${g && d > DEPTH / 2 ? " rear" : ""}" style="--d:${d}">${ch}</span>`;
+      // seen from behind, the mirrored И / Я read as a plain N / R
+      const back = g ? `<span class="back">${ch === "И" ? "N" : "R"}</span>` : "";
+      slot.innerHTML = `<span class="lt"><span class="spin">${back}${layers}<span class="face">${ch}</span></span></span><span class="shadow"></span>`;
       a.appendChild(slot);
       if (g) glyphs.push(slot.querySelector(".spin"));
     });
@@ -956,21 +1013,131 @@ footer { background: #15110F; color: #ECE7E4; padding-block: 3.5rem 2.5rem; }
       lastX = e.clientX; lastY = e.clientY; lastT = now;
     }, { passive: true });
     const SPEED = .55; // px per ms
-    glyphs.forEach(el => {
-      el.closest(".slot").addEventListener("pointerenter", () => {
-        if (speed < SPEED || el.getAnimations().length) return;
-        const turns = Math.min(6, 3 + Math.round(speed));
-        const end = dirX * 360 * turns;
-        el.animate(
-          [
-            { transform: "rotateY(0deg) translateY(0)" },
-            { transform: `rotateY(${end * .62}deg) translateY(-.08em)`, offset: .55 },
-            { transform: `rotateY(${end}deg) translateY(0)` },
-          ],
-          { duration: 1100 + turns * 140, easing: "cubic-bezier(.2,.75,.25,1)" }
-        );
+    const whirl = el => {
+      if (el.getAnimations().length) return;
+      const turns = Math.min(6, 3 + Math.round(speed));
+      const end = dirX * 360 * turns;
+      el.animate(
+        [
+          { transform: "rotateY(0deg) translateY(0)" },
+          { transform: `rotateY(${end * .62}deg) translateY(-.08em)`, offset: .55 },
+          { transform: `rotateY(${end}deg) translateY(0)` },
+        ],
+        { duration: 1100 + turns * 140, easing: "cubic-bezier(.2,.75,.25,1)" }
+      );
+    };
+    // Works for mouse and touch: with touch, pointerenter never fires on other elements,
+    // so we hit-test the point under the finger/cursor on every move.
+    let over = null;
+    window.addEventListener("pointermove", e => {
+      const hit = document.elementFromPoint(e.clientX, e.clientY)?.closest(".inverso .slot.g") || null;
+      if (hit && hit !== over && speed >= SPEED) whirl(hit.querySelector(".spin"));
+      over = hit;
+    }, { passive: true });
+  })();
+
+
+  // Minimap: always visible as a compressed rail; expands with labels while scrolling,
+  // when the pointer comes near the left edge, on hover/focus, or when the rail is tapped.
+  (function minimap() {
+    const nav = document.getElementById("mm");
+    if (!nav) return;
+    const track = nav.querySelector(".mm-track");
+    const view = nav.querySelector(".mm-view");
+    const items = [...nav.querySelectorAll("li")].map(li => ({ li, el: document.getElementById(li.dataset.target) }));
+    const finePointer = matchMedia("(hover: hover) and (pointer: fine)");
+    let segs = [], hideTimer = 0, hovering = false, nearEdge = false;
+
+    // Layout: each section gets a block whose height is proportional to the section,
+    // with a minimum so every label stays readable. Section boundaries run from one
+    // section's top to the next one's, so the blocks cover the whole page.
+    function layout() {
+      const docH = document.documentElement.scrollHeight;
+      const small = innerWidth <= 700;
+      const T = Math.min(innerHeight * (small ? .6 : .62), small ? 440 : 560);
+      const minH = small ? 17 : 20;
+      const tops = items.map(({ el }) => el.getBoundingClientRect().top + scrollY);
+      tops[0] = 0;
+      const ends = tops.map((t, i) => (i + 1 < tops.length ? tops[i + 1] : docH));
+      const raw = tops.map((t, i) => Math.max(1, ends[i] - t));
+      const sum = raw.reduce((x, y) => x + y, 0);
+      const free = Math.max(0, T - minH * items.length);
+      let acc = 0;
+      segs = items.map((it, i) => {
+        const h = minH + free * raw[i] / sum;
+        it.li.style.height = h + "px";
+        const seg = { y0: tops[i], y1: ends[i], b0: acc, b1: acc + h };
+        acc += h;
+        return seg;
       });
+      update();
+    }
+
+    // Map a page coordinate to a minimap coordinate, piecewise per section
+    function map(y) {
+      for (const g of segs) {
+        if (y <= g.y1) return g.b0 + (g.b1 - g.b0) * Math.max(0, Math.min(1, (y - g.y0) / (g.y1 - g.y0)));
+      }
+      return segs.length ? segs[segs.length - 1].b1 : 0;
+    }
+
+    function update() {
+      if (!segs.length) return;
+      const top = map(scrollY), bottom = map(scrollY + innerHeight);
+      view.style.top = 6 + top + "px";
+      view.style.height = Math.max(6, bottom - top) + "px";
+      // Highlight every section that is at least partly on screen; the one taking most of the screen is "current"
+      let best = null, bestArea = 0;
+      for (const [i, g] of segs.entries()) {
+        const vis = Math.max(0, Math.min(g.y1, scrollY + innerHeight) - Math.max(g.y0, scrollY));
+        items[i].li.classList.toggle("on", vis > 0);
+        if (vis > bestArea) { bestArea = vis; best = items[i].li; }
+      }
+      items.forEach(({ li }) => li.querySelector("a").removeAttribute("aria-current"));
+      if (best) best.querySelector("a").setAttribute("aria-current", "true");
+    }
+
+    const open = () => { clearTimeout(hideTimer); nav.classList.add("open"); };
+    const closeSoon = (ms = 1300) => {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(() => {
+        if (!hovering && !nearEdge && !nav.contains(document.activeElement)) nav.classList.remove("open");
+      }, ms);
+    };
+
+    let ticking = false;
+    addEventListener("scroll", () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(() => { update(); ticking = false; }); }
+      open(); closeSoon();
+    }, { passive: true });
+
+    // Mouse: open when the cursor approaches the left edge, close when it leaves
+    addEventListener("pointermove", e => {
+      if (e.pointerType !== "mouse") return;
+      const was = nearEdge;
+      nearEdge = e.clientX < (nav.classList.contains("open") ? 250 : 90);
+      if (nearEdge) open(); else if (was) closeSoon(350);
+    }, { passive: true });
+    nav.addEventListener("pointerenter", e => { if (e.pointerType === "mouse") { hovering = true; open(); } });
+    nav.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { hovering = false; closeSoon(350); } });
+    nav.addEventListener("focusin", open);
+    nav.addEventListener("focusout", () => closeSoon(200));
+
+    // Touch: the first tap on the compressed rail only opens it; taps on labels navigate.
+    nav.addEventListener("click", e => {
+      if (!nav.classList.contains("open")) { e.preventDefault(); open(); closeSoon(3500); return; }
+      const a = e.target.closest("a");
+      if (a) closeSoon(900);
     });
+    // Tap outside closes it
+    document.addEventListener("pointerdown", e => {
+      if (e.pointerType !== "mouse" && !nav.contains(e.target)) nav.classList.remove("open");
+    }, { passive: true });
+
+    addEventListener("resize", layout);
+    if (window.ResizeObserver) new ResizeObserver(() => layout()).observe(document.body);
+    document.fonts && document.fonts.ready.then(layout);
+    layout();
   })();
 
   // Initial language: saved choice, else the browser's
